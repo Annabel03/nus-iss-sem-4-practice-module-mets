@@ -17,7 +17,7 @@ export const EVAL_SUITES: EvalSuite[] = [
   {
     id: "concierge",
     name: "Concierge",
-    description: "Greet or clarify. Do not teach a lesson or emit a quiz widget.",
+    description: "100 cases: greet, clarify, refuse out-of-scope work, and protect privacy. Do not teach a lesson or emit a quiz widget.",
     kind: "concierge",
     items: conciergeItems,
   },
