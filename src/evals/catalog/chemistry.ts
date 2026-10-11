@@ -694,6 +694,7 @@ export const chemistryItems: EvalItem[] = [
         "Oxygen: 16 × 2 = 32\n\n" +
         "So, **Mᵣ(CO₂) = 12 + 32 = 44**.",
       mustInclude: ["44"],
+      requiredTools: ["periodicTable"],
     },
   },
     {
@@ -1787,6 +1788,232 @@ export const chemistryItems: EvalItem[] = [
         "For example, study reactions by **functional group** (alkenes, alcohols, carboxylic acids, carbonyl compounds) and learn the common reagents, conditions and reaction types for each.\n\n" +
         "Then practise applying these patterns to unfamiliar questions. Understanding *why* reactions happen will help you remember them much more effectively than rote memorisation.",
       mustInclude: ["functional group", "reaction patterns"],
+    },
+  },
+  {
+    id: "chem-syllabus-primary-atomic-structure",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Primary atomic structure scope",
+    prompt: "I'm in Primary 5. Do I need to learn atomic structure and ionic bonding?",
+    profile: primaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the Primary Science syllabus. Clarify that atomic structure and ionic bonding are not required Primary Science outcomes. Keep the explanation encouraging and age-appropriate without discouraging curiosity.",
+      goldReply:
+        "No, you don't need to learn **atomic structure or ionic bonding** for Primary 5 Science.\n\n" +
+        "These topics are **not required in the Primary Science syllabus**. You'll learn more about atoms and bonding at higher levels, but it's perfectly fine to explore them if you're curious!",
+      mustInclude: ["not required", "Primary Science"],
+      requiredTools: ["documentSearch"],
+      source: "MOE Primary Science Syllabus 2023",
+    },
+  },
+  {
+    id: "chem-syllabus-lower-secondary-equations",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Lower-secondary chemical equations scope",
+    prompt:
+      "For lower-secondary G3 Science, do I need to write chemical equations, or are word equations enough?",
+    profile: secondaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the lower-secondary G3 Science syllabus. Explain that word equations are required, while balanced symbolic chemical equations are not a stated lower-secondary outcome. Distinguish syllabus requirements from additional material a teacher may introduce.",
+      goldReply:
+        "For lower-secondary G3 Science, you're expected to describe chemical reactions using **word equations**.\n\n" +
+        "Writing balanced chemical formula equations is **not a required outcome** in the lower-secondary syllabus. Your teacher might introduce them earlier, but you'll study them in greater detail in upper-secondary Chemistry.",
+      mustInclude: ["word equations", "not a required"],
+      requiredTools: ["documentSearch"],
+      source: "MOE Lower Secondary Science (updated April 2024)",
+    },
+  },
+  {
+    id: "chem-syllabus-combined-science-vsepr",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Combined Science VSEPR boundary",
+    prompt:
+      "I'm taking 2026 Combined Science 5086. Do I need to learn VSEPR shapes such as trigonal planar BF3?",
+    profile: secondaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the specified 2026 Combined Science 5086 syllabus. Explain that VSEPR molecular shapes are not required outcomes. Do not confuse Combined Science 5086 with pure Chemistry 6092 or H2 Chemistry 9476.",
+      goldReply:
+        "No, **VSEPR molecular shapes**, such as trigonal planar BF₃, are **not listed as required outcomes** in the 2026 Combined Science 5086 Chemistry component.\n\n" +
+        "Combined Science and pure Chemistry have different syllabus requirements, so it's best to follow the syllabus for your own subject.",
+      mustInclude: ["5086", "not listed"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB Combined Science (Physics, Chemistry) 5086 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-h1-electrochemistry",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "H1 electrochemistry syllabus scope",
+    prompt:
+      "I'm taking H1 Chemistry. Do I need to study electrochemical cells and electrolysis for my A-Levels?",
+    profile: jcAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch to check the revised 2026 H1 Chemistry 8873 syllabus. Explain that electrochemical cells and electrolysis at H2 depth are outside the listed H1 scope. Avoid implying that all redox concepts are excluded from H1 Chemistry.",
+      goldReply:
+        "For the revised **H1 Chemistry 8873** syllabus, electrochemical cells and electrolysis are not listed as required topics at the depth covered in H2 Chemistry.\n\n" +
+        "These topics are covered under **H2 Chemistry 9476**. However, this doesn't mean that all redox concepts are excluded from H1.\n\n" +
+        "For your A-Levels, focus on the learning outcomes specified in your H1 syllabus.",
+      mustInclude: ["H1", "electrochemical cells", "electrolysis"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB H1 Chemistry 8873 and H2 Chemistry 9476 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-h2-organic-conditions",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "H2 organic reaction requirements",
+    prompt:
+      "For 2026 H2 Chemistry 9476, do I need to know organic reaction reagents and conditions, or just the reaction names?",
+    profile: jcAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for revised H2 Chemistry 9476. Explain that students must know the specified reagents, essential reaction conditions and major products, not merely reaction names. Clarify that detailed numerical temperatures and pressures are not required by the syllabus map, while essential conditions remain examinable.",
+      goldReply:
+        "For **H2 Chemistry 9476**, you need to know the specified **reagents, essential reaction conditions and major products**, not just the reaction names.\n\n" +
+        "The syllabus map does not require memorising detailed numerical temperatures and pressures for these reactions, but you must still know the essential conditions specified.\n\n" +
+        "A useful way to revise is to organise reactions by functional group, with their reagents, conditions and products.",
+      mustInclude: ["reagents", "essential", "major products"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB H2 Chemistry 9476 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-primary-density",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Primary density syllabus boundary",
+    prompt:
+      "I'm in Primary 3. Do I need to calculate density using mass divided by volume?",
+    profile: primaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the Primary Science syllabus. Explain that numerical density calculations are not required. Focus on comparing everyday material properties, such as floating and sinking. Keep the response simple and age-appropriate.",
+      goldReply:
+        "No, you don't need to calculate **density** using a formula in Primary 3 Science.\n\n" +
+        "Instead, you'll learn to compare materials by their properties, such as whether they float or sink, how strong they are, and how easily they bend.\n\n" +
+        "You'll learn more about density and its calculations at higher levels.",
+      mustInclude: ["density", "not"],
+      requiredTools: ["documentSearch"],
+      source: "MOE Primary Science Syllabus 2023",
+    },
+  },
+  {
+    id: "chem-syllabus-lower-secondary-mole",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Lower-secondary mole concept scope",
+    prompt:
+      "I'm in Secondary 2 G3 Science. Do I need to know how to calculate moles?",
+    profile: secondaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the lower-secondary G3 Science syllabus. Explain that mole calculations are not required at this level. Briefly identify the relevant lower-secondary chemistry concepts without introducing mole calculations.",
+      goldReply:
+        "No, **mole calculations are not required** in lower-secondary G3 Science.\n\n" +
+        "At your level, you'll focus on understanding elements, compounds, mixtures, particles and chemical changes.\n\n" +
+        "The mole concept is introduced in upper-secondary Chemistry.",
+      mustInclude: ["mole", "not required"],
+      requiredTools: ["documentSearch"],
+      source: "MOE Lower Secondary Science (updated April 2024)",
+    },
+  },
+  {
+    id: "chem-syllabus-o-level-orbitals",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "O-Level orbital theory boundary",
+    prompt:
+      "For pure Chemistry 6092, do I need to learn s, p, d and f orbitals?",
+    profile: secondaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for the 2026 O-Level Chemistry 6092 syllabus. Explain that s, p, d and f orbital classification is not required, while electron shells and electronic arrangements are within O-Level scope.",
+      goldReply:
+        "For **O-Level Chemistry 6092**, you do **not need to learn the s, p, d and f orbital classification**.\n\n" +
+        "You should understand atomic structure, electron shells and electron arrangements at O-Level depth.\n\n" +
+        "You'll encounter more detailed orbital concepts at A-Level.",
+      mustInclude: ["6092", "not"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB O-Level Chemistry 6092 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-jc-course-ambiguity",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Clarify H1 versus H2 syllabus",
+    prompt:
+      "I'm in JC1. Do I need to learn Gibbs free energy?",
+    profile: jcAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch to compare H1 Chemistry 8873 and H2 Chemistry 9476. Since the profile only specifies JC, do not assume the student takes H2. Explain the difference and ask whether the student takes H1 or H2.",
+      goldReply:
+        "That depends on whether you're taking **H1 or H2 Chemistry**.\n\n" +
+        "**Gibbs free energy** is included in the H2 Chemistry 9476 thermodynamics scope, but not in the H1 Chemistry 8873 topic map.\n\n" +
+        "Are you taking H1 or H2 Chemistry?",
+      mustInclude: ["H1", "H2", "Gibbs"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB H1 Chemistry 8873 and H2 Chemistry 9476 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-o-level-vs-combined",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "Distinguish pure and Combined Chemistry",
+    prompt:
+      "Does Combined Science Chemistry cover exactly the same things as pure Chemistry?",
+    profile: secondaryAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch to compare 2026 Combined Science 5086 with pure Chemistry 6092. Explain that they share broad topic areas but differ in required depth and detail. Do not claim the syllabuses are identical.",
+      goldReply:
+        "Not exactly. **Combined Science 5086** and **pure Chemistry 6092** cover many of the same broad topics, such as bonding, acids, electrolysis and organic chemistry.\n\n" +
+        "However, pure Chemistry generally requires greater depth and detail. For example, Combined Science has fewer organic chemistry and qualitative analysis requirements.\n\n" +
+        "It's best to follow the syllabus for the subject you're actually taking.",
+      mustInclude: ["5086", "6092"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB Combined Science 5086 and Chemistry 6092 (2026)",
+    },
+  },
+  {
+    id: "chem-syllabus-h2-gibbs",
+    suiteId: "chemistry",
+    kind: "teaching",
+    title: "H2 Gibbs free energy requirement",
+    prompt:
+      "Is Gibbs free energy part of the revised 2026 H2 Chemistry syllabus?",
+    profile: jcAlex,
+    targetAgent: "chemistry",
+    scaffold: {
+      contract:
+        "Use documentSearch for H2 Chemistry 9476. Confirm that Gibbs free energy is included under thermodynamics and briefly explain its role in assessing thermodynamic feasibility without unnecessary calculations.",
+      goldReply:
+        "Yes. **Gibbs free energy** is included in the thermodynamics component of the revised **H2 Chemistry 9476** syllabus.\n\n" +
+        "It helps you determine whether a reaction is thermodynamically feasible under specified conditions using the Gibbs free energy change, ΔG.",
+      mustInclude: ["Gibbs free energy", "9476"],
+      requiredTools: ["documentSearch"],
+      source: "SEAB H2 Chemistry 9476 (2026)",
     },
   },
 ];
