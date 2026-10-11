@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon, type MetsIconName } from "@/components/icons";
+import { cn } from "@/lib/cn";
 
 /* ─────────────────────────────────────────────────────────
  * CHAT — interactive panel with tabs, replies, and composer.
@@ -51,20 +52,23 @@ export function ChatUserBubble({
   children,
   visible = true,
   size = "compact",
+  className,
 }: {
   children: ReactNode;
   visible?: boolean;
   size?: "compact" | "message";
+  className?: string;
 }) {
   const message = size === "message";
   return (
     <div className={message ? "flex w-full justify-end" : "flex justify-end pl-14"}>
       <div
-        className={
+        className={cn(
           message
-            ? "max-w-[min(36rem,85%)] rounded-2xl bg-field px-4 py-2.5 text-[0.9375rem] leading-6 text-ink shadow-[var(--bui-shadow-hairline)]"
-            : "rounded-xl bg-field px-3 py-1.5 text-[13px] leading-[1.4] text-ink"
-        }
+            ? "max-w-[min(36rem,85%)] rounded-2xl bg-field px-4 py-2.5 text-[0.9375rem] leading-6 text-ink"
+            : "rounded-xl bg-field px-3 py-1.5 text-[13px] leading-[1.4] text-ink",
+          className,
+        )}
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(10px)",
@@ -218,7 +222,7 @@ export default function ChatComposer({
         <div
           role="presentation"
           onClick={() => inputRef.current?.focus()}
-          className="flex cursor-text flex-col gap-2 rounded-control border border-line bg-field p-2.5 shadow-[0_1px_2px_rgba(0,0,0,0.035)] transition-[border-color,box-shadow] duration-150 focus-within:border-line-strong focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.025)]"
+          className="flex cursor-text flex-col gap-2 rounded-control border border-line bg-field p-2.5 transition-[border-color] duration-150 focus-within:border-line-strong"
         >
           <input
             ref={inputRef}

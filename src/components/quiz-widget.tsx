@@ -97,10 +97,10 @@ export function QuizWidget({
     const isGood = percentage >= 70;
     
     return (
-      <div className="rounded-xl border border-line/50 bg-gradient-to-br from-green-tint to-surface p-6 shadow-card" style={{ animation: "pop-in 260ms cubic-bezier(0.23,1,0.32,1) both" }}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-green text-white shadow-md">
-            <Icon icon="quiz" size={20} strokeWidth={2} />
+      <div>
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex size-9 items-center justify-center rounded-md bg-green text-white">
+            <Icon icon="quiz" size={16} strokeWidth={2} />
           </div>
           <div>
             <h4 className="text-lg font-bold text-ink">{quiz.title}</h4>
@@ -108,7 +108,7 @@ export function QuizWidget({
           </div>
         </div>
         
-        <div className="mb-4 rounded-lg border border-green/20 bg-white/50 p-4">
+        <div className="mb-4 border border-line p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-2xl font-bold text-green">
               {score} / {quiz.items.length}
@@ -116,7 +116,7 @@ export function QuizWidget({
             <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
               isPerfect ? 'bg-green text-white' : isGood ? 'bg-green-tint text-green' : 'bg-orange-tint text-orange'
             }`}>
-              {isPerfect ? '🎉 Perfect!' : isGood ? '✓ Good job!' : '📚 Keep practicing'}
+              {isPerfect ? "Perfect" : isGood ? "Good" : "Keep practising"}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-ink-3/20">
@@ -129,13 +129,13 @@ export function QuizWidget({
         
         <div className="space-y-2">
           {attemptState === "saving" ? (
-            <p className="text-sm text-ink-3">💾 Saving your score...</p>
+            <p className="text-sm text-ink-3">Saving your score...</p>
           ) : attemptState === "saved" ? (
-            <p className="text-sm text-green">✓ Saved to your Testing progress!</p>
+            <p className="text-sm text-green">Saved to Testing progress.</p>
           ) : attemptState === "guest" ? (
-            <p className="text-sm text-ink-3">ℹ️ Sign in to track your score history</p>
+            <p className="text-sm text-ink-3">Sign in to track your score history.</p>
           ) : attemptState === "error" ? (
-            <p className="text-sm text-red">⚠️ Could not save this score</p>
+            <p className="text-sm text-red">Could not save this score.</p>
           ) : null}
           
           <Button 
@@ -157,7 +157,7 @@ export function QuizWidget({
   }
 
   return (
-    <div className="rounded-xl border border-line/50 bg-surface/50 p-5 shadow-sm backdrop-blur-sm">
+    <div>
       <div className="mb-4 flex items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-lg bg-accent/10">
           <Icon icon="quiz" size={16} className="text-accent" />

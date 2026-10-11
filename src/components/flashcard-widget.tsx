@@ -35,10 +35,10 @@ export function FlashcardWidget({ deck }: { deck: FlashcardSet }) {
     const isGood = percentage >= 70;
     
     return (
-      <div className="rounded-xl border border-line/50 bg-gradient-to-br from-accent-tint to-surface p-6 shadow-card" style={{ animation: "pop-in 260ms cubic-bezier(0.23,1,0.32,1) both" }}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-accent text-white shadow-md">
-            <Icon icon="flashcards" size={20} strokeWidth={2} />
+      <div>
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex size-9 items-center justify-center rounded-md bg-accent text-white">
+            <Icon icon="flashcards" size={16} strokeWidth={2} />
           </div>
           <div>
             <h4 className="text-lg font-bold text-ink">{deck.title}</h4>
@@ -46,7 +46,7 @@ export function FlashcardWidget({ deck }: { deck: FlashcardSet }) {
           </div>
         </div>
         
-        <div className="mb-4 rounded-lg border border-accent/20 bg-white/50 p-4">
+        <div className="mb-4 border border-line p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-2xl font-bold text-accent">
               {known} / {deck.cards.length}
@@ -54,7 +54,7 @@ export function FlashcardWidget({ deck }: { deck: FlashcardSet }) {
             <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
               isExcellent ? 'bg-green text-white' : isGood ? 'bg-accent-tint text-accent' : 'bg-orange-tint text-orange'
             }`}>
-              {isExcellent ? '🌟 Excellent!' : isGood ? '✓ Well done!' : '📖 Keep reviewing'}
+              {isExcellent ? "Excellent" : isGood ? "Well done" : "Keep reviewing"}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-ink-3/20">
@@ -80,7 +80,7 @@ export function FlashcardWidget({ deck }: { deck: FlashcardSet }) {
   }
 
   return (
-    <div className="rounded-xl border border-line/50 bg-surface/50 p-5 shadow-sm backdrop-blur-sm">
+    <div>
       <div className="mb-4 flex items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-lg bg-accent/10">
           <Icon icon="flashcards" size={16} className="text-accent" />

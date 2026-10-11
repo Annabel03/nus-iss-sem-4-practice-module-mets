@@ -96,11 +96,13 @@ export function TestingProgressPanel({ signedIn }: { signedIn?: boolean }) {
   }, [signedIn]);
 
   return (
-    <div className="rounded-xl border border-line/50 bg-inset/50 p-4 shadow-sm backdrop-blur-sm">
-      <div className="flex items-center justify-between gap-2 mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-ink-3">Testing Progress</p>
+    <div>
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3">
+          Testing progress
+        </p>
         {signedIn ? (
-          <ValuePill className="ml-0 gap-1 shadow-sm" tone="accent">
+          <ValuePill className="ml-0 gap-1" tone="accent">
             <Icon icon="quiz" size={11} />
             <span className="text-xs">MCQ</span>
           </ValuePill>
@@ -108,43 +110,32 @@ export function TestingProgressPanel({ signedIn }: { signedIn?: boolean }) {
       </div>
 
       {!signedIn ? (
-        <div className="rounded-lg border border-line/50 bg-surface/50 p-4 text-center">
-          <Icon icon="quiz" size={20} className="mx-auto mb-2 text-ink-3" />
-          <p className="text-xs leading-relaxed text-ink-3">
-            Sign in to save quiz scores and track your topic-by-topic progress over time.
-          </p>
-        </div>
+        <p className="text-xs leading-5 text-ink-3">
+          Sign in to save quiz scores and track your topic-by-topic progress over time.
+        </p>
       ) : state.loading ? (
-        <div className="rounded-lg border border-line/50 bg-surface/50 p-4 text-center">
-          <div className="mb-2 inline-flex size-5 animate-spin items-center justify-center rounded-full border-2 border-accent/30 border-t-accent" />
-          <p className="text-xs text-ink-3">Loading score history...</p>
-        </div>
+        <p className="text-xs text-ink-3">Loading score history...</p>
       ) : state.error ? (
-        <div className="rounded-lg border border-red/30 bg-red-tint p-4">
-          <p className="text-xs font-medium text-red">{state.error}</p>
-        </div>
+        <p className="text-xs text-red">{state.error}</p>
       ) : state.summaries.length === 0 ? (
-        <div className="rounded-lg border border-line/50 bg-surface/50 p-4 text-center">
-          <Icon icon="flashcards" size={20} className="mx-auto mb-2 text-ink-3" />
-          <p className="text-xs leading-relaxed text-ink-3">
-            Complete your first MCQ quiz to start tracking your improvement.
-          </p>
-        </div>
+        <p className="text-xs leading-5 text-ink-3">
+          Complete your first MCQ quiz to start tracking your improvement.
+        </p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {state.summaries.map((summary) => {
             const percentage = Math.round((summary.latest.score / summary.latest.totalQuestions) * 100);
             return (
-              <div 
-                key={`${summary.subject}:${summary.mode}:${summary.topicKey}`} 
-                className="group rounded-lg border border-line/50 bg-surface/80 p-3 shadow-sm transition-all hover:shadow-md"
+              <div
+                key={`${summary.subject}:${summary.mode}:${summary.topicKey}`}
+                className="border-t border-line pt-3 first:border-t-0 first:pt-0"
               >
                 <div className="mb-2 flex items-start gap-2">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-bold text-ink">{summary.topicLabel}</p>
                     <p className="mt-0.5 text-xs text-ink-2">{summary.title}</p>
                   </div>
-                  <ValuePill className="ml-0 gap-1 shadow-sm" tone={trendTone(summary.trend)}>
+                  <ValuePill className="ml-0 gap-1" tone={trendTone(summary.trend)}>
                     <Icon icon={summary.trend === "improving" ? "tick" : summary.trend === "regressing" ? "cancel" : "quiz"} size={10} />
                     <span className="text-xs font-semibold">{trendLabel(summary.trend)}</span>
                   </ValuePill>

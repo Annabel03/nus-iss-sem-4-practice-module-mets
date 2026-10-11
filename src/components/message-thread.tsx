@@ -95,7 +95,7 @@ export function MessageThread({
           if (!text) return null;
           return (
             <div key={message.id} className="flex justify-end">
-              <ChatUserBubble size="message" className="shadow-sm transition-shadow hover:shadow-md">
+              <ChatUserBubble size="message">
                 <MarkdownBody text={text} className="markdown-user" />
               </ChatUserBubble>
             </div>
@@ -227,7 +227,7 @@ export function MessageThread({
             {turn.kind === "widgets" ? (
               <div className="flex flex-col gap-3">
                 {widgets.map((widget) => (
-                  <div key={widget.key} className="rounded-xl border border-line/50 bg-surface/50 p-4 shadow-card backdrop-blur-sm transition-all hover:shadow-raised">
+                  <div key={widget.key} className="border border-line bg-surface p-4">
                     {widget.node}
                   </div>
                 ))}
@@ -235,7 +235,7 @@ export function MessageThread({
             ) : turn.kind === "preparing" ? (
               <LoadingState className="mt-2" variant="Dots" label="Preparing practice" />
             ) : (
-              <div className="rounded-xl border border-line/50 bg-surface/50 p-5 shadow-sm backdrop-blur-sm">
+              <div className="border-t border-line pt-4">
                 <ChatSection label={copy.label} sub="specialist" resolving={false}>
                   {visibleSteps.length > 0 ? (
                     <div className="mb-4">

@@ -243,14 +243,14 @@ function ChatPane({
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.4rem)] min-w-0 flex-col bg-gradient-to-b from-canvas to-page">
-      <header className="flex items-end justify-between gap-4 border-b border-line/50 bg-surface/80 px-5 pt-6 pb-4 backdrop-blur-sm sm:px-8">
+    <div className="flex h-[calc(100vh-3.4rem)] min-w-0 flex-col bg-canvas">
+      <header className="flex items-end justify-between gap-4 border-b border-line bg-surface px-5 py-4 sm:px-8">
         <div>
-          <p className="text-2xl font-semibold tracking-tight text-ink">
+          <p className="text-lg font-semibold tracking-tight text-ink">
             {profile.name}&rsquo;s desk
           </p>
-          <p className="mt-1.5 text-sm text-ink-2">
-            Ask questions, get expert help, and continue learning.
+          <p className="mt-1 text-sm text-ink-2">
+            Mathematics, Physics, and Chemistry for the Singapore syllabus.
           </p>
         </div>
         {routing ? (
@@ -297,7 +297,7 @@ function ChatPane({
         </div>
       </div>
 
-      <div className="border-t border-line/50 bg-surface/80 px-5 py-4 backdrop-blur-sm sm:px-8">
+      <div className="border-t border-line bg-surface px-5 py-4 sm:px-8">
         <div className="mx-auto max-w-4xl">
           <PromptBar
             id="tutor-input"
@@ -331,35 +331,35 @@ function RoutingRail({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mb-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-3">Agent Routing</p>
-        <h2 className="text-xl font-bold tracking-tight text-ink">Why this agent?</h2>
-        <p className="mt-3 rounded-lg border border-line/50 bg-inset/30 p-3 text-xs leading-relaxed text-ink-2">
+      <div className="mb-5">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3">
+          Routing
+        </p>
+        <h2 className="mt-2 text-base font-semibold tracking-tight text-ink">Why this agent?</h2>
+        <p className="mt-3 text-xs leading-6 text-ink-2">
           {routing[0]
             ? routing[0].rationale
             : "After you send a question, this panel shows which specialist answered and the reasoning behind the decision."}
         </p>
       </div>
-      
-      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto">
+
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto border-t border-line pt-4">
         {routing.length === 0 ? (
-          <div className="rounded-xl border border-line/50 bg-inset/30 p-5">
-            <ThinkingState
-              variant="Steps"
-              active="Waiting for a question"
-              done="No turns yet"
-              rows={[
-                { primary: "Ask a question from your desk" },
-                { primary: "Orchestration selects a specialist" },
-                { primary: "This panel shows the decision trail" },
-              ]}
-            />
-          </div>
+          <ThinkingState
+            variant="Steps"
+            active="Waiting for a question"
+            done="No turns yet"
+            rows={[
+              { primary: "Ask a question from your desk" },
+              { primary: "Orchestration selects a specialist" },
+              { primary: "This panel shows the decision trail" },
+            ]}
+          />
         ) : (
           routing.map((item, index) => (
-            <div 
+            <div
               key={`${item.agent}-${item.rationale}-${index}`}
-              className="rounded-xl border border-line/50 bg-surface/50 p-4 shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
+              className="border-b border-line pb-4 last:border-b-0"
             >
               <ThinkingState
                 variant="Reasoning"
@@ -386,50 +386,30 @@ function EmptyDesk({
   onPick: (text: string) => void;
 }) {
   return (
-    <div className="flex min-h-[calc(100vh-16rem)] items-center justify-center py-12">
-      <div className="max-w-2xl text-center">
-        <div className="mb-6 inline-flex items-center justify-center rounded-2xl bg-accent/10 p-4">
-          <Icon icon="tutor" size={32} className="text-accent" />
-        </div>
-        <h2 className="text-4xl font-bold tracking-tight text-ink">
-          Hello, {name}
-        </h2>
-        <p className="mt-4 text-lg text-ink-2">
-          Welcome to your personal learning desk. Ask me anything about Mathematics, Physics, or Chemistry.
-        </p>
-        <div className="mt-8">
-          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-ink-3">
-            Try these questions
-          </p>
-          <div className="grid gap-3 sm:grid-cols-1">
-            {STARTERS.map((starter, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => onPick(starter)}
-                className="group relative overflow-hidden rounded-xl border border-line bg-surface p-4 text-left shadow-card transition-all hover:border-accent/30 hover:shadow-raised hover:-translate-y-0.5"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 flex-shrink-0">
-                    <Icon 
-                      icon={starter.includes("differentiate") ? "math" : starter.includes("Convert") ? "physics" : "chemistry"} 
-                      size={18} 
-                      className="text-ink-2 transition-colors group-hover:text-accent" 
-                    />
-                  </div>
-                  <p className="flex-1 text-sm font-medium text-ink transition-colors group-hover:text-accent">
-                    {starter}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="mt-8 flex items-center justify-center gap-2 text-xs text-ink-3">
-          <Icon icon="read" size={14} />
-          <span>Powered by Singapore syllabus maps</span>
-        </div>
+    <div className="mx-auto max-w-xl py-16">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3">Tutor</p>
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink">Hello, {name}</h2>
+      <p className="mt-3 max-w-prose text-[15px] leading-7 text-ink-2">
+        Ask a syllabus question, or start with one of these.
+      </p>
+      <div className="mt-10 divide-y divide-line border-y border-line">
+        {STARTERS.map((starter, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => onPick(starter)}
+            className="flex w-full items-start gap-3 py-4 text-left transition-colors hover:bg-hover/70"
+          >
+            <Icon
+              icon={starter.includes("differentiate") ? "math" : starter.includes("Convert") ? "physics" : "chemistry"}
+              size={16}
+              className="mt-0.5 text-ink-3"
+            />
+            <p className="text-sm leading-6 text-ink">{starter}</p>
+          </button>
+        ))}
       </div>
+      <p className="mt-6 text-xs text-ink-3">Singapore syllabus maps</p>
     </div>
   );
 }

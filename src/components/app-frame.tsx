@@ -9,15 +9,15 @@ import { cn } from "@/lib/cn";
 
 export function BrandMark() {
   return (
-    <Link href="/" className="group flex items-center gap-2.5 no-underline transition-transform hover:scale-[1.02]">
-      <Monogram color="#111827" className="size-8 text-[0.65rem] shadow-sm transition-shadow group-hover:shadow-md">
+    <Link href="/" className="flex items-center gap-2.5 no-underline">
+      <Monogram color="#111827" className="size-7 text-[0.6rem]">
         M
       </Monogram>
       <div className="flex flex-col">
-        <span className="text-[1rem] font-bold tracking-tight text-ink">
+        <span className="text-[0.9375rem] font-semibold tracking-tight text-ink">
           METS
         </span>
-        <span className="text-[0.625rem] font-medium uppercase tracking-wider text-ink-3">
+        <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-ink-3">
           Learning Hub
         </span>
       </div>
@@ -62,26 +62,20 @@ export function NavLink({
     <Link
       href={href}
       className={cn(
-        "group relative inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium no-underline transition-all",
+        "inline-flex items-center gap-1.5 border-b-2 px-1 py-2 text-sm no-underline transition-colors",
         isActive
-          ? "bg-accent/10 text-accent shadow-[0_0_0_1px_var(--accent-tint)]"
-          : "text-ink-2 hover:bg-hover/80 hover:text-ink hover:shadow-hairline",
+          ? "border-ink font-medium text-ink"
+          : "border-transparent text-ink-2 hover:text-ink",
       )}
     >
       {icon ? (
-        <Icon 
-          icon={icon} 
-          size={15} 
-          className={cn(
-            "transition-transform",
-            isActive ? "text-accent" : "text-ink-3 group-hover:text-ink-2"
-          )}
-        /> 
+        <Icon
+          icon={icon}
+          size={14}
+          className={isActive ? "text-ink" : "text-ink-3"}
+        />
       ) : null}
       {children}
-      {isActive && (
-        <div className="absolute bottom-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-accent" />
-      )}
     </Link>
   );
 }
@@ -136,7 +130,7 @@ export function AppFrame({
           {sidebarOpen ? (
             <button
               type="button"
-              className="fixed inset-0 z-40 bg-ink/30 backdrop-blur-[2px] lg:hidden"
+              className="fixed inset-0 z-40 bg-ink/20 lg:hidden"
               aria-label="Close student menu"
               onClick={() => setSidebarOpen(false)}
             />
@@ -144,7 +138,7 @@ export function AppFrame({
           <aside
             id="student-sidebar"
             className={cn(
-              "flex-col overflow-y-auto border-r border-line/60 bg-surface/95 px-5 py-6 backdrop-blur-sm",
+              "flex-col overflow-y-auto border-r border-line bg-surface px-5 py-6",
               "lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0",
               sidebarOpen ? "fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw]" : "hidden",
             )}
@@ -156,7 +150,7 @@ export function AppFrame({
       {sidebar ? (
         <button
           type="button"
-          className="fixed top-3.5 left-4 z-[60] inline-flex size-9 items-center justify-center rounded-lg bg-surface/95 text-ink-2 shadow-hairline backdrop-blur-sm transition-colors hover:bg-hover hover:text-ink lg:hidden"
+          className="fixed top-3 left-4 z-[60] inline-flex size-9 items-center justify-center rounded-md border border-line bg-surface text-ink-2 transition-colors hover:bg-hover hover:text-ink lg:hidden"
           aria-label={sidebarOpen ? "Close student menu" : "Open student menu"}
           aria-expanded={sidebarOpen}
           aria-controls="student-sidebar"
@@ -168,7 +162,7 @@ export function AppFrame({
       <div className="flex min-w-0 flex-1 flex-col">
         <header
           className={cn(
-            "sticky top-0 z-50 flex items-center justify-between gap-4 border-b border-line/60 bg-surface/95 py-3.5 backdrop-blur-sm",
+            "sticky top-0 z-50 flex items-center justify-between gap-4 border-b border-line bg-surface py-3",
             sidebar ? "pl-14 pr-6 sm:pl-16 sm:pr-8 lg:px-8" : "px-6 sm:px-8",
           )}
         >
@@ -181,7 +175,7 @@ export function AppFrame({
         <div className="flex min-h-0 min-w-0 flex-1">
           <main className="min-w-0 flex-1">{children}</main>
           {rail ? (
-            <aside className="sticky top-0 hidden h-[calc(100vh-3.5rem)] w-80 shrink-0 flex-col overflow-y-auto border-l border-line/60 bg-surface/95 px-6 py-6 backdrop-blur-sm xl:flex">
+            <aside className="sticky top-0 hidden h-[calc(100vh-3.5rem)] w-72 shrink-0 flex-col overflow-y-auto border-l border-line bg-surface px-6 py-6 xl:flex">
               {rail}
             </aside>
           ) : null}
