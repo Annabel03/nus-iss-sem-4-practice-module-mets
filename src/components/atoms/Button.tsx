@@ -4,8 +4,6 @@ import { ButtonHTMLAttributes } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const filledShadow = "shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]";
-
 /* Pill-shaped by default — the app's core button style. Explicit symmetric
  * padding (not a fixed height) so the top/bottom spacing is always equal. */
 export const buttonVariants = cva(
@@ -15,11 +13,11 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: `bg-ink text-canvas hover:opacity-90 dark:bg-ink dark:text-canvas ${filledShadow}`,
+        primary: "bg-ink text-canvas hover:opacity-90 dark:bg-ink dark:text-canvas",
         secondary: "bg-surface text-ink shadow-btn hover:bg-inset aria-expanded:bg-hover",
         ghost: "bg-hover-2 text-ink hover:bg-line-strong",
-        accent: `bg-accent text-white hover:bg-accent-ink ${filledShadow}`,
-        success: `bg-green text-white hover:brightness-95 ${filledShadow}`,
+        accent: "bg-accent text-white hover:bg-accent-ink",
+        success: "bg-green text-white hover:brightness-95",
         /* transparent until hovered — for dense toolbars/action rows */
         quiet: "text-ink hover:bg-hover",
       },
