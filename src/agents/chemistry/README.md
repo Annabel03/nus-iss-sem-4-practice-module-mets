@@ -47,7 +47,7 @@ Missing elements: add rows to `PERIODIC_TABLE` in `tools.ts`. Do not scrape the 
 
 - State symbols where a Singapore mark scheme would expect them.
 - The profile says JC, but not H1 or H2. Ask which course when it affects syllabus coverage.
-- At JC, name the mechanism (electrophilic addition, nucleophilic substitution, …) before steps.
+- At JC, name the mechanism (electrophilic addition, nucleophilic substitution, …) before steps. If asked only to name it, keep the response brief; explain steps when requested.
 - Give safe, teacher-supervised practical guidance and identify relevant hazards.
 - Use "aluminium" and "sulfur" (Singapore spelling).
 

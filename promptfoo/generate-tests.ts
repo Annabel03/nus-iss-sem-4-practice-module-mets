@@ -32,10 +32,12 @@ const SMOKE_IDS = new Set([
   "physics-primary-forces",
   "physics-units-trap",
   "physics-energy",
-  // chemistry (3)
+  // chemistry (5)
   "chem-balance",
   "chem-moles",
   "chem-safety",
+  "chem-carbon",
+  "chem-mechanism",
   // testing (6)
   "testing-secondary-kinematics-mcq",
   "testing-secondary-algebra-flashcards",
