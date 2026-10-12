@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import type { PromptLogEntry, RoutingDecision } from "@/agents/_shared/types";
 
 const MAX_ENTRIES = 200;
@@ -27,5 +28,5 @@ export function listRouting(sessionId: string) {
 }
 
 export function newLogId() {
-  return `log_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+  return `log_${randomUUID()}`;
 }

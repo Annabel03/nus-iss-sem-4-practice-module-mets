@@ -1,5 +1,6 @@
 import type { LanguageModelV3StreamPart } from "@ai-sdk/provider";
 import type { LanguageModelMiddleware } from "ai";
+import { stripLineEndWhitespace, stripModelImageMarkup } from "@/lib/reply-text";
 
 const SAFE_REPLY = "Let's keep this respectful. I'm happy to keep working through the maths with you.";
 const INCOMPLETE_REPLY = "That explanation was incomplete. Please ask me to try again.";
@@ -19,20 +20,32 @@ const PROMPT_DISCLOSURE = [
   /\bmy (?:system )?(?:prompt|instructions) (?:are|is|say)\b/i,
 ];
 
-/**
- * Markup the student must never receive as text. Graphs come from
- * drawMathGraph, which is bounded and testable, so a self-drawn image or a copy
- * of the tool's data is removed. Each pattern also matches a reply cut off
- * part-way through (the `$` alternative).
- */
-const STRIPPED_MARKUP = [
-  /[ \t]*!\[[^\]]*\]\([^)]*(?:\)|$)/g, // markdown image
-  /[ \t]*data:image\/[\w.+-]+;base64,[A-Za-z0-9+/=]*/gi, // bare base64 image
-  /[ \t]*<img\b[^>]*(?:>|$)/gi,
-  /[ \t]*<svg\b[\s\S]*?(?:<\/svg>|$)/gi,
-  /[ \t]*<jsxgraph\b[\s\S]*?(?:<\/jsxgraph>|\/>|$)/gi, // the graph tool's output echoed back
-  /(?:\[?\s*\{\s*"x"\s*:\s*-?[\d.eE+-]+\s*,\s*"y"\s*:\s*-?[\d.eE+-]+\s*\}\s*,?\s*\]?\s*){3,}/g, // plotted points
-];
+/** Remove runs of tool-generated points without nested repeated regex groups. */
+function stripGraphPoints(text: string) {
+  const points = [...text.matchAll(/\{\s*"x"\s*:\s*[\d.eE+-]+\s*,\s*"y"\s*:\s*[\d.eE+-]+\s*\}/g)];
+  const output: string[] = [];
+  let cursor = 0;
+  for (let first = 0; first < points.length;) {
+    let last = first;
+    while (last + 1 < points.length) {
+      const end = points[last].index + points[last][0].length;
+      if (!/^[\s,[\]]*$/.test(text.slice(end, points[last + 1].index))) break;
+      last++;
+    }
+    if (last - first >= 2) {
+      let start = points[first].index;
+      let end = points[last].index + points[last][0].length;
+      while (start > cursor && /\s/.test(text[start - 1])) start--;
+      if (start > cursor && text[start - 1] === "[") start--;
+      while (end < text.length && /[\s,\]]/.test(text[end])) end++;
+      output.push(text.slice(cursor, start));
+      cursor = end;
+    }
+    first = last + 1;
+  }
+  output.push(text.slice(cursor));
+  return output.join("");
+}
 
 /**
  * Tidies a Math reply without changing any mathematics.
@@ -50,13 +63,17 @@ export function normaliseMathReply(text: string): string {
     .map((part, index) => {
       // Odd indices are fenced code, which is left exactly as written.
       if (index % 2) return part;
-      let next = STRIPPED_MARKUP.reduce((stripped, pattern) => stripped.replace(pattern, ""), part)
+      let next = stripGraphPoints(stripModelImageMarkup(part, {
+        truncated: true,
+        graphs: true,
+        leadingSpaces: true,
+      }))
         // Normalise LaTeX delimiters to the $ forms the chat renders.
         .replace(/\\\[([\s\S]*?)\\\]/g, (_, body: string) => `\n$$\n${body.trim()}\n$$\n`)
         .replace(/\\\(([\s\S]*?)\\\)/g, (_, body: string) => `$${body.trim()}$`);
       // An unclosed display block swallows the rest of the answer.
       if ((next.match(/\$\$/g)?.length ?? 0) % 2) next += "\n$$";
-      return next.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+      return stripLineEndWhitespace(next).replace(/\n{3,}/g, "\n\n");
     })
     .join("")
     .trim();

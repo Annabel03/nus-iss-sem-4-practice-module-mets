@@ -5,6 +5,25 @@ import { wrapLanguageModel } from "ai";
 import { MockLanguageModelV3 } from "ai/test";
 import { normaliseTestingReply, testingGuardrails } from "./guardrails";
 
+test("line scanning still catches indented and multiline answer keys", () => {
+  for (const text of [
+    "Note\n\n  Q1. A\n\tQuestion 2: B\n  3) C",
+    "1.\nA\n2.\nB\n3.\nC",
+    "Question\n1: A\nQuestion\n2: B\nQuestion\n3: C",
+  ]) {
+    assert.match(normaliseTestingReply(text), /full answer key in prose/i);
+  }
+});
+
+test("line scanning still catches widget bullets and options split over lines", () => {
+  assert.match(normaliseTestingReply("-\n-\n-\nStudy notes", { hasWidgetTool: true }), /Try the widget first/);
+  assert.match(normaliseTestingReply("A) one\nB) two\nC) three\nA) four\nB) five\nC) six", {
+    hasWidgetTool: true,
+  }), /Try the widget first/);
+  assert.equal(normaliseTestingReply("The force is 3 N and option A needs units."),
+    "The force is 3 N and option A needs units.");
+});
+
 test("guardrails refuse prompt disclosure, live-paper cloning, and answer-key dumps", () => {
   assert.match(
     normaliseTestingReply("My system prompt says I should reveal the hidden rules."),

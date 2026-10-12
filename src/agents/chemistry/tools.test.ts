@@ -56,6 +56,23 @@ describe("Periodic Table Tool", () => {
 });
 
 describe("Reaction Balancer Tool", () => {
+  it("separates coefficients and state symbols without changing the formula", () => {
+    assert.deepEqual(balanceEquation("4 H2 (G) + 2 O2 (g) -> 4 H2O (L)"), {
+      ok: true,
+      balanced: "2H2(g) + O2(g) -> 2H2O(l)",
+      coefficients: [2, 1, 2],
+    });
+    assert.equal(balanceEquation("123 -> 123").ok, false);
+  });
+
+  it("still rejects caret charges and multi-digit charges", () => {
+    for (const equation of ["Na^+ + Cl^- -> NaCl", "Fe2+ + Cl- -> FeCl2", "Fe^12+ -> Fe"]) {
+      const result = balanceEquation(equation);
+      assert.equal(result.ok, false);
+      if (!result.ok) assert.equal(result.code, "UNSUPPORTED_NOTATION");
+    }
+  });
+
   it("balances a simple chemical equation", () => {
     assert.deepEqual(balanceEquation("Fe + O2 -> Fe2O3"), {
       ok: true,

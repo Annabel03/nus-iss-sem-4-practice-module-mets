@@ -4,6 +4,7 @@ import type { AgentRuntimeContext, Subject } from "../_shared/types";
 import type { TestingMode, VisualFormat } from "./assessment-planner";
 import { estimateCostUsd } from "@/evals/pricing";
 import { getModelId } from "@/lib/llm";
+import { stripLineEndWhitespace } from "@/lib/reply-text";
 import {
   appendAssessmentPerformanceEntry,
   consumeStagedAssessmentPerformanceEntry,
@@ -43,10 +44,32 @@ const ANSWER_KEY_PATTERNS = [
   /\banswer key\b/i,
   /\bcorrect answers?\b/i,
 ];
-const ANSWER_LINE = /(?:^|\n)\s*(?:q(?:uestion)?\s*)?\d+\s*[\)\.\-:]\s*[A-E]\b/gim;
-const QUESTION_LINE = /(?:^|\n)\s*\d+\s*[\)\.\-:]/gim;
-const OPTION_LINE = /(?:^|\n)\s*(?:[-*]\s*)?\(?[A-Ea-e]\)\s+/gm;
-const BULLET_LINE = /(?:^|\n)\s*[-*]\s+/gm;
+const ANSWER_LINE = /(?:q(?:uestion)?\s*)?\d+\s*[).\-:]\s*[A-E]\b/iy;
+const QUESTION_LINE = /\d+\s*[).\-:]/iy;
+const OPTION_LINE = /(?:[-*]\s*)?\(?[A-Ea-e]\)\s+/y;
+const BULLET_LINE = /[-*]\s+/y;
+
+function countMatchingLines(text: string, pattern: RegExp) {
+  const breaks = /[\n\u2028\u2029]/g;
+  let count = 0;
+  let start = 0;
+  while (start < text.length) {
+    // Skip each indentation/blank-line run once. Sticky patterns only try this
+    // position, while still recognising answers whose letter is on the next line.
+    while (start < text.length && /\s/.test(text[start])) start++;
+    pattern.lastIndex = start;
+    const matched = pattern.test(text);
+    if (matched) count++;
+    if (matched && /[\n\u2028\u2029]/.test(text[pattern.lastIndex - 1])) {
+      start = pattern.lastIndex;
+      continue;
+    }
+    breaks.lastIndex = matched ? pattern.lastIndex : start;
+    if (!breaks.exec(text)) break;
+    start = breaks.lastIndex;
+  }
+  return count;
+}
 
 type WidgetAssessmentMetadata = {
   subject: Subject;
@@ -179,9 +202,7 @@ async function logAssessmentTelemetry(options: {
 }
 
 function repairWhitespace(text: string) {
-  return text
-    .replace(/\r\n?/g, "\n")
-    .replace(/[ \t]+\n/g, "\n")
+  return stripLineEndWhitespace(text.replace(/\r\n?/g, "\n"))
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
@@ -221,15 +242,13 @@ function hasAnswerKeyDump(text: string) {
     return true;
   }
 
-  const answerLines = text.match(ANSWER_LINE) ?? [];
-  return answerLines.length >= 3;
+  return countMatchingLines(text, ANSWER_LINE) >= 3;
 }
 
 function hasWidgetEcho(text: string) {
-  const questionLines = text.match(QUESTION_LINE) ?? [];
-  const optionLines = text.match(OPTION_LINE) ?? [];
-  const bulletLines = text.match(BULLET_LINE) ?? [];
-  return questionLines.length >= 3 || optionLines.length >= 6 || bulletLines.length >= 3;
+  return countMatchingLines(text, QUESTION_LINE) >= 3 ||
+    countMatchingLines(text, OPTION_LINE) >= 6 ||
+    countMatchingLines(text, BULLET_LINE) >= 3;
 }
 
 export function normaliseTestingReply(
@@ -252,9 +271,9 @@ export function normaliseTestingReply(
     options?.widgetMode === "flashcards" &&
     (
       repaired.length > 180 ||
-      (repaired.match(BULLET_LINE) ?? []).length >= 2 ||
-      (repaired.match(QUESTION_LINE) ?? []).length >= 1 ||
-      /(?:^|\n)\s*(?:front|back)\s*:/im.test(repaired)
+      countMatchingLines(repaired, BULLET_LINE) >= 2 ||
+      countMatchingLines(repaired, QUESTION_LINE) >= 1 ||
+      countMatchingLines(repaired, /(?:front|back)\s*:/iy) >= 1
     )
   ) {
     return WIDGET_NOTE_REPLY;

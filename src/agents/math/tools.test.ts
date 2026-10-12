@@ -2,6 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { degreesToRadians, drawMathGraphTool, equationSolverTool, graphSummaryForModel } from "./tools";
 
+test("degree conversion preserves unmarked tokens and recognises decimal and variable angles", () => {
+  assert.equal(degreesToRadians("sin(12.5°) + cos(x DEG) - 30 degrees"),
+    "sin((12.5 * pi / 180)) + cos((x * pi / 180)) - (30 * pi / 180)");
+  assert.equal(degreesToRadians("12.5 + x + 30 degreeSymbol + cos(2x)"),
+    "12.5 + x + 30 degreeSymbol + cos(2x)");
+});
+
 type ToolResult = Record<string, unknown>;
 
 type CallArgs = {

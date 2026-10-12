@@ -1,5 +1,6 @@
 import type { LanguageModelV3StreamPart } from "@ai-sdk/provider";
 import type { LanguageModelMiddleware } from "ai";
+import { stripLineEndWhitespace, stripModelImageMarkup } from "@/lib/reply-text";
 
 const SAFE_REPLY = "Let's keep this safe and respectful. I can explain the physics using a safe classroom example.";
 const INCOMPLETE_REPLY = "That explanation was incomplete. Please ask me to try again.";
@@ -29,16 +30,14 @@ export function normalisePhysicsReply(text: string): string {
     .split(/(```[\s\S]*?```)/)
     .map((part, index) => {
       if (index % 2) return part;
-      let next = part
-        // Physics visuals must come from the bounded diagram tool. Strip model-
-        // authored image markup so it cannot bypass the renderer or create an
-        // invalid/unsafe image URL in the shared Markdown component.
-        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-        .replace(/<img\b[^>]*>/gi, "")
+      // Physics visuals must come from the bounded diagram tool. Strip model-
+      // authored image markup so it cannot bypass the renderer or create an
+      // invalid/unsafe image URL in the shared Markdown component.
+      let next = stripModelImageMarkup(part)
         .replace(/\\\[([\s\S]*?)\\\]/g, (_, body: string) => `\n$$\n${body.trim()}\n$$\n`)
         .replace(/\\\(([\s\S]*?)\\\)/g, (_, body: string) => `$${body.trim()}$`);
       if ((next.match(/\$\$/g)?.length ?? 0) % 2) next += "\n$$";
-      return next.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+      return stripLineEndWhitespace(next).replace(/\n{3,}/g, "\n\n");
     }).join("").trim();
   return repaired || INCOMPLETE_REPLY;
 }

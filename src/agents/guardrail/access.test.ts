@@ -4,6 +4,25 @@ import { isAdminUser, parseEmailList } from "./access";
 import { notifyRecipients } from "./notify";
 import { resetGuardrailMemoryForTests, storeGuardrailAlert } from "./store";
 
+test("parent email validation rejects malformed domains and preserves valid addresses", () => {
+  const saved = {
+    admin: process.env.METS_ADMIN_EMAILS,
+    parent: process.env.METS_PARENT_NOTIFY_EMAIL,
+  };
+  try {
+    process.env.METS_ADMIN_EMAILS = "";
+    process.env.METS_PARENT_NOTIFY_EMAIL = "";
+    for (const email of ["a@b", "@school.sg", "a@.sg", "a@school.", "a@@school.sg", "a b@school.sg"]) {
+      assert.deepEqual(notifyRecipients(email), []);
+    }
+    assert.deepEqual(notifyRecipients("Carer@Family.SG"), ["carer@family.sg"]);
+    assert.deepEqual(notifyRecipients("a@sub.school.sg"), ["a@sub.school.sg"]);
+  } finally {
+    setEnv("METS_ADMIN_EMAILS", saved.admin);
+    setEnv("METS_PARENT_NOTIFY_EMAIL", saved.parent);
+  }
+});
+
 test("admin role gate", () => {
   assert.deepEqual(parseEmailList("Parent@School.edu.sg, tutor@moe.edu.sg"), [
     "parent@school.edu.sg",

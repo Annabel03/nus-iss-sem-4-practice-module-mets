@@ -252,11 +252,24 @@ function solveEquation(expression: string) {
 }
 
 /** School trigonometry is in degrees, but mathjs reads a bare number as radians. */
-const DEGREES = /(\d+(?:\.\d+)?|\b[a-z]\b)\s*(?:°|\bdeg(?:rees?)?\b)/gi;
 const TRIG_CALL = /\b(?:sin|cos|tan|sec|csc|cot)\s*\(/;
 
 export function degreesToRadians(expression: string) {
-  return expression.replace(DEGREES, "($1 * pi / 180)");
+  const values = /\d+(?:\.\d+)?|\b[a-z]\b/gi;
+  const units = /(?:°|\bdeg(?:rees?)?\b)/iy;
+  const output: string[] = [];
+  let cursor = 0;
+  for (let value = values.exec(expression); value; value = values.exec(expression)) {
+    let unitStart = values.lastIndex;
+    while (unitStart < expression.length && /\s/.test(expression[unitStart])) unitStart++;
+    units.lastIndex = unitStart;
+    if (!units.exec(expression)) continue;
+    output.push(expression.slice(cursor, value.index), `(${value[0]} * pi / 180)`);
+    cursor = units.lastIndex;
+    values.lastIndex = cursor;
+  }
+  output.push(expression.slice(cursor));
+  return output.join("");
 }
 
 export const equationSolverTool = tool({

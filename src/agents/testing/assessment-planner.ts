@@ -79,7 +79,12 @@ const topicStopwords = new Set([
 ]);
 
 function cleanTopic(value: string) {
-  const cleaned = value.replace(/\s+/g, " ").replace(/^[,;:.\- ]+|[,;:.\- ]+$/g, "").trim();
+  const collapsed = value.replace(/\s+/g, " ");
+  let start = 0;
+  let end = collapsed.length;
+  while (start < end && ",;:.- ".includes(collapsed[start])) start++;
+  while (end > start && ",;:.- ".includes(collapsed[end - 1])) end--;
+  const cleaned = collapsed.slice(start, end).trim();
   const words = cleaned.split(/\s+/).filter(Boolean);
 
   while (words.length && topicStopwords.has(words[0]!.toLowerCase())) {

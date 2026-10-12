@@ -3,6 +3,15 @@ import { test } from "node:test";
 import type { LanguageModelV3StreamPart } from "@ai-sdk/provider";
 import { mathGuardrails, normaliseMathReply } from "./guardrails";
 
+test("graph point filtering preserves short examples and only removes continuous tool data", () => {
+  const twoPoints = 'Example: [{"x":1,"y":2},{"x":2,"y":4}]';
+  assert.equal(normaliseMathReply(twoPoints), twoPoints);
+  const separated = '{"x":1,"y":2}; {"x":2,"y":4}; {"x":3,"y":6}';
+  assert.equal(normaliseMathReply(separated), separated);
+  assert.equal(normaliseMathReply('Points: [{"x":-1e2,"y":2.5},{"x":0,"y":0},{"x":1,"y":2}] lie on a line.'),
+    "Points: lie on a line.");
+});
+
 test("abuse and prompt disclosure are replaced, ordinary maths is untouched", () => {
   assert.match(normaliseMathReply("You're an idiot."), /respectful/);
   assert.match(normaliseMathReply("You are the METS Mathematics Agent, a specialist tutor"), /can't share my instructions/);

@@ -1,5 +1,6 @@
 import type { LanguageModelV3StreamPart } from "@ai-sdk/provider";
 import type { LanguageModelMiddleware } from "ai";
+import { stripLineEndWhitespace, stripModelImageMarkup } from "@/lib/reply-text";
 
 const DANGEROUS_CHEMISTRY_REPLY =
   "I can't help plan or carry out dangerous chemical reactions. I can explain the chemistry safely or suggest a teacher-approved demonstration without hazardous procedures.";
@@ -47,13 +48,11 @@ export function normaliseChemistryReply(text: string): string {
     .split(/(```[\s\S]*?```)/)
     .map((part, index) => {
       if (index % 2) return part;
-      let next = part
-        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-        .replace(/<img\b[^>]*>/gi, "")
+      let next = stripModelImageMarkup(part)
         .replace(/\\\[([\s\S]*?)\\\]/g, (_, body: string) => `\n$$\n${body.trim()}\n$$\n`)
         .replace(/\\\(([\s\S]*?)\\\)/g, (_, body: string) => `$${body.trim()}$`);
       if ((next.match(/\$\$/g)?.length ?? 0) % 2) next += "\n$$";
-      return next.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+      return stripLineEndWhitespace(next).replace(/\n{3,}/g, "\n\n");
     }).join("").trim();
 
   return repaired || INCOMPLETE_REPLY;

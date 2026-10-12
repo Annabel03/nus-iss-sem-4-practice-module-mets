@@ -209,12 +209,12 @@ function parseFormula(formula: string): AtomCounts | undefined {
 
 function parseSpecies(text: string): ParsedSpecies | undefined {
   const trimmed = text.trim();
-  const phaseMatch = /\s*\((s|l|g|aq)\)$/i.exec(trimmed);
+  const phaseMatch = /\((s|l|g|aq)\)$/i.exec(trimmed);
   const body = phaseMatch ? trimmed.slice(0, phaseMatch.index).trim() : trimmed;
-  const coefficientMatch = /^(\d+)\s*(.+)$/.exec(body);
-  const coefficient = coefficientMatch ? Number(coefficientMatch[1]) : 1;
+  const coefficientMatch = /^\d+/.exec(body);
+  const coefficient = coefficientMatch ? Number(coefficientMatch[0]) : 1;
   if (!Number.isSafeInteger(coefficient) || coefficient < 1 || coefficient > MAX_ATOM_COUNT) return undefined;
-  const formula = coefficientMatch ? coefficientMatch[2] : body;
+  const formula = coefficientMatch ? body.slice(coefficientMatch[0].length).trimStart() : body;
   const atoms = parseFormula(formula);
   if (!atoms) return undefined;
   const phase = phaseMatch ? `(${phaseMatch[1].toLowerCase()})` : "";
@@ -267,7 +267,7 @@ function integerCoefficients(values: Fraction[]): bigint[] | undefined {
   for (const value of values) denominator = denominator / gcd(denominator, value.d) * value.d;
   let ints = values.map((value) => value.n * (denominator / value.d));
   if (ints.some((v) => v <= 0n)) return undefined;
-  const divisor = ints.reduce((acc, v) => gcd(acc, v));
+  const divisor = ints.reduce((acc, v) => gcd(acc, v), 0n);
   ints = ints.map((v) => v / divisor);
   return ints;
 }
@@ -281,7 +281,7 @@ export function balanceEquation(equation: string): BalanceResult {
   if (sides.length !== 2 || sides.some((side) => !side.trim()))
     return failure("INVALID_SYNTAX", "Use the form H2 + O2 -> H2O.");
   // Ionic charges and hydrates are valid chemistry, but unsupported by this parser.
-  if (/[·.]/.test(input) || /(?:[A-Za-z0-9\)])(?:\^?\d*[+-])(?=\s|\+|->|=>|=|→|$)/.test(input))
+  if (/[·.]/.test(input) || /[A-Za-z0-9)]\^?[+-](?=\s|\+|->|=>|=|→|$)/.test(input))
     return failure("UNSUPPORTED_NOTATION", "Charged species and hydrate notation are not supported by this balancer.");
   const parseSide = (side: string) => side.split("+").map((part) => part.trim());
   const leftParts = parseSide(sides[0]);
