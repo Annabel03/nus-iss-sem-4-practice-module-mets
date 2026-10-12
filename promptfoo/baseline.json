@@ -1,11 +1,11 @@
 {
   "version": 1,
   "subset": "smoke",
-  "generatedAt": "2026-10-04T08:50:29.696Z",
+  "generatedAt": "2026-10-12T14:06:35.400Z",
   "passRateTolerance": 0.1,
   "suites": {
     "chemistry": {
-      "expectedCases": 3,
+      "expectedCases": 5,
       "passRate": 1
     },
     "concierge": {
