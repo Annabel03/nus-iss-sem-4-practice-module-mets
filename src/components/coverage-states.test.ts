@@ -17,8 +17,8 @@ test("conversation rail distinguishes an empty desk from the active thread", () 
     items: [],
     activeId: null,
   }));
-  assert.match(empty, /No chats yet/);
-  assert.match(empty, /New chat/);
+  assert.match(empty, /No conversations yet/);
+  assert.match(empty, /<button\b[^>]*>[\s\S]*?New<\/button>/);
 
   const populated = renderToStaticMarkup(createElement(ConversationRail, {
     ...callbacks,
@@ -30,7 +30,7 @@ test("conversation rail distinguishes an empty desk from the active thread", () 
   }));
   assert.match(populated, /Kinematics/);
   assert.match(populated, /New chat/);
-  assert.doesNotMatch(populated, /No chats yet/);
+  assert.doesNotMatch(populated, /No conversations yet/);
 });
 
 test("dataset desk starts with the supplied suite and no result", () => {

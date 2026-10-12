@@ -6,6 +6,13 @@ Chemistry is not a separate subject until upper secondary. Primary and lower-sec
 
 Sources: MOE Primary Science Syllabus 2023; MOE 2021 G2/G3 and G1 Lower Secondary Science (updated April 2024); SEAB GCE O-Level 2026 Chemistry 6092 and Combined Science (Physics, Chemistry) 5086; SEAB GCE A-Level 2026 H1 Chemistry 8873 and H2 Chemistry 9476 (revised; 9729 is last examined in 2026).
 
+References:
+* Primary Science Syllabus 2023: https://www.moe.gov.sg/api/media/ba3562d3-5b31-4459-8693-45cde7b97273/Primary-Science-Syllabus-2023.pdf
+* O-Level Chemistry 6092: https://isomer-user-content.by.gov.sg/334/19dfb9f9-b3ce-4609-a3cf-5d30052317f5/6092_y26_sy.pdf
+* O-Level Combined Science 5086: https://isomer-user-content.by.gov.sg/334/a67fa90c-d3a3-4cb4-8c92-4f88346b5051/5086_y26_sy.pdf
+* A-Level H1 Chemistry 8873: https://isomer-user-content.by.gov.sg/334/00e57932-74b9-4a60-b0c8-4a8e183e440c/8873_y26_sy.pdf
+* A-Level H2 Chemistry 9476: https://isomer-user-content.by.gov.sg/334/4dd1835f-d26b-4967-a4c5-657c92a60767/9476_y26_sy.pdf
+
 ## Primary Science — Diversity of materials (MOE Primary Science Syllabus 2023)
 
 P3 chemical-science topic (also mapped in physics for properties of matter):
