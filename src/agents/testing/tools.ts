@@ -5,7 +5,6 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 import {
   buildAssessmentPlan,
   buildMermaidDiagram,
-  DIFFICULTY_LEVELS,
   TESTING_MODES,
   VISUAL_FORMATS,
   type ScoreContext,
@@ -18,7 +17,6 @@ import {
   type TestingTrend,
 } from "./score-history";
 import {
-  appendAssessmentPerformanceEntry,
   stageAssessmentPerformanceEntry,
   readRecentAssessmentPerformance,
 } from "./performance-log";
@@ -37,7 +35,6 @@ const subjectSchema = z.enum(["math", "physics", "chemistry"]);
 const gradeLevelSchema = z.enum(["primary", "secondary", "jc"]);
 const testingModeSchema = z.enum(TESTING_MODES);
 const visualFormatSchema = z.enum(VISUAL_FORMATS);
-const difficultyLevelSchema = z.enum(DIFFICULTY_LEVELS);
 const trendSchema = z.enum(["new", "improving", "regressing", "stable"] as const satisfies readonly [TestingTrend, ...TestingTrend[]]);
 const nonEmptyText = z.string().trim().min(1);
 

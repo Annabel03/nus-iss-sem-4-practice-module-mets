@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/ui/loading-state";
 import { PromptBar } from "@/components/ui/prompt-bar";
 import ThinkingState from "@/components/primitives/ThinkingState";
-import StreamingText from "@/components/primitives/StreamingText";
 import { AGENT_COPY } from "@/lib/agent-copy";
 import { isTestingWidgetToolType, shouldSuppressTestingBusyIndicator } from "@/lib/testing-turn";
 import type { MetsUIMessage } from "@/lib/ui-types";

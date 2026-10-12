@@ -95,10 +95,13 @@ export function AppFrame({
 }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarPathname, setSidebarPathname] = useState(pathname);
 
-  useEffect(() => {
+  // Reset before rendering the new route so the drawer does not stay open.
+  if (sidebarPathname !== pathname) {
+    setSidebarPathname(pathname);
     setSidebarOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1024px)");

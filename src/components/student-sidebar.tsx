@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { StudentProfile } from "@/agents/_shared/types";
 import { schoolGradeLabel } from "@/agents/_shared/types";
-import { Icon } from "@/components/icons";
 import { cn } from "@/lib/cn";
 import { TestingProgressPanel } from "./testing-progress-panel";
 

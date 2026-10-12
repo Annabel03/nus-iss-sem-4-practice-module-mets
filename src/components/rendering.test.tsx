@@ -40,13 +40,14 @@ test("onboarding shows all supported school bands and optional diagnostics", () 
 
 test("app frame places optional navigation, sidebar, actions, and rail", () => {
   const html = renderToStaticMarkup(
-    createElement(AppFrame, {
-      nav: "Tutor navigation",
-      sidebar: "Student profile",
-      actions: "Sign out",
-      rail: "Routing log",
-      children: "Lesson",
-    }),
+    <AppFrame
+      nav="Tutor navigation"
+      sidebar="Student profile"
+      actions="Sign out"
+      rail="Routing log"
+    >
+      Lesson
+    </AppFrame>,
   );
   assert.match(html, /Tutor navigation/);
   assert.match(html, /Student profile/);

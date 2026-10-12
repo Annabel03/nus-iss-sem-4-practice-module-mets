@@ -1,6 +1,6 @@
 import type { StudentProfile } from "@/agents/_shared/types";
 import type { EvalItem } from "../types";
-import { jcAlex, primaryAlex, secondaryAlex } from "./profiles";
+import { secondaryAlex } from "./profiles";
 
 const primaryMei: StudentProfile = {
   name: "Mei",
