@@ -130,5 +130,5 @@ Testing now has a first Testing-local guardrail layer plus stronger deterministi
 - [ ] Decide whether token/cost logging should stay file-based or later feed a richer engineering dashboard.
 - [ ] Decide whether the bare-minimum explicit level gate should later expand into fuller topic-by-topic curriculum gating.
 - [ ] Decide whether a combined verifier / marker module should be added next.
-- [ ] Decide whether richer SVG / HTML / CSS visual generation is still needed once Mermaid-first behaviour is tested.
+- [ ] Decide whether richer SVG / HTML / CSS visual generation is still needed if Testing later adds a new visual output path.
 - [ ] Decide whether Testing needs any additional guardrail-specific harness fixtures beyond the new eval and unit-test coverage.

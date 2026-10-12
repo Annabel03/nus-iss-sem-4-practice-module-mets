@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildAssessmentPlan,
-  buildMermaidDiagram,
   deriveDifficulty,
   EASIER_MAX_PERCENTAGE,
   extractAssessmentTopics,
@@ -18,12 +17,11 @@ test("planner defaults to mcq, detects flashcards, and marks visual requests", (
     request: "Make flashcards on acids and bases with a simple diagram.",
     gradeLevel: "secondary",
   });
-
   assert.equal(mcqPlan.mode, "mcq");
   assert.equal(mcqPlan.visualFormat, "none");
   assert.equal(flashcardPlan.mode, "flashcards");
-  assert.equal(flashcardPlan.visualFormat, "mermaid");
-  assert.equal(flashcardPlan.needsVisual, true);
+  assert.equal(flashcardPlan.mode, "flashcards");
+  assert.equal(flashcardPlan.visualFormat, "none");
 });
 
 test("planner topic extraction keeps useful topics and drops prompt filler", () => {
@@ -87,20 +85,4 @@ test("buildAssessmentPlan includes difficulty standard when no score context", (
 
   assert.equal(plan.difficulty, "standard");
   assert.match(plan.rationale, /No score context is available/i);
-});
-
-test("mermaid builder escapes labels and emits a small graph", () => {
-  const diagram = buildMermaidDiagram({
-    title: "Bonding map",
-    direction: "TB",
-    nodes: [
-      { id: "Start", label: 'Ionic "bonding"' },
-      { id: "End", label: "Electrostatic attraction" },
-    ],
-    edges: [{ from: "Start", to: "End", label: "forms" }],
-  });
-
-  assert.match(diagram, /title: Bonding map/);
-  assert.match(diagram, /Start\["Ionic \\"bonding\\""\]/);
-  assert.match(diagram, /Start -->\|forms\| End/);
 });

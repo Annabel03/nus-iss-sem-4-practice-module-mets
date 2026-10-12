@@ -46,7 +46,6 @@ const TESTING_INTERNAL_ONLY_TOOLS = new Set([
   "getChemistryAssessmentSource",
   "getTopicScoreContext",
   "getRecentPerformance",
-  "createMermaidDiagram",
 ]);
 
 function filterEvalToolCalls(item: EvalItem, toolCalls: string[]) {

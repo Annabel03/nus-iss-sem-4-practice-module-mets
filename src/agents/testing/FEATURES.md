@@ -58,20 +58,7 @@ Strong product + LLMOps narrative: data drives the UX.
 
 ---
 
-## 5. Mermaid Diagram Rendering `[MEDIUM]`
-
-**What:** `createMermaidDiagram` tool already exists and the agent calls it.
-Wire the UI component to render the output.
-
-**Why it matters:** High demo-ability — visible feature in the chat.
-Requires coordination with Sritam for the widget component.
-Low effort once unblocked.
-
-**Files touched:** `tools.ts` (already done), widget component (Sritam's side)
-
----
-
-## 6. Token / Cost Logging per Assessment `[LOW]`
+## 5. Token / Cost Logging per Assessment `[LOW]`
 
 **What:** Append `inputTokens`, `outputTokens`, `costUsd` to each entry in
 `logs/testing-performance/`.
