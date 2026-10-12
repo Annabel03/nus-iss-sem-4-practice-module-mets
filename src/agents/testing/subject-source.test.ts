@@ -21,7 +21,7 @@ const ctx: AgentRuntimeContext = {
 };
 
 test("prompt version and source-tool grounding", () => {
-  assert.equal(TESTING_PROMPT_VERSION, "2.3.0");
+  assert.equal(TESTING_PROMPT_VERSION, "2.4.0");
   const instructions = buildTestingInstructions(ctx);
   assert.match(instructions, /getMathAssessmentSource/);
   assert.match(instructions, /getPhysicsAssessmentSource/);

@@ -44,10 +44,9 @@ If the quiz **widget UI** is broken, that is `src/components/quiz-widget.tsx` / 
 
 ## Internal helper tools now available
 
-- `planAssessment` — internal planning aid for MCQ vs flashcard, topic extraction, and whether a Mermaid diagram may help
+- `planAssessment` — internal planning aid for MCQ vs flashcard, topic extraction, and difficulty selection
 - `getTopicScoreContext` — looks up topic-scoped score history before a quiz; persisted score summaries are the source of truth and profile-note score hints are only a fallback
 - `getRecentPerformance` — reads the latest Testing notes for the current session from `logs/testing-performance/`
-- `createMermaidDiagram` — builds Mermaid text for simple labelled visuals; the current UI does **not** render Mermaid yet
 - `recordPerformance` — stores a compact Testing note for later follow-up; this tool is note-only, so do not include outcome or score fields
 
 ## Score tracking
@@ -190,7 +189,6 @@ Suggested workflow:
    - widget tool choice
    - Testing-local guardrail behaviour for prompt-disclosure or answer-key-dump attempts
    - prompt quality
-   - Mermaid planning behaviour
    - performance-log writes
 
 This is the preferred local structure when teammate-owned agents or routing are incomplete.

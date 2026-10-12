@@ -13,7 +13,6 @@ This file is for **Harun's Testing-agent context and decision log**. It can be c
 - It also had shared syllabus-search access and internal helpers such as:
   - `planAssessment`
   - `getRecentPerformance`
-  - `createMermaidDiagram`
   - `recordPerformance`
 - The main weakness was that Physics assessments still depended too much on the model's **implicit subject knowledge** rather than an explicit Testing-owned subject-source contract.
 - The first Testing harness version also under-reported tool activity because top-level `toolCalls` and `toolResults` could appear empty even when step data showed real tool execution.
@@ -140,7 +139,6 @@ This separation matters for the professors' software-engineering emphasis.
 - `planAssessment`
 - `getTopicScoreContext`
 - `getRecentPerformance`
-- `createMermaidDiagram`
 - `recordPerformance` (assessment note only; no outcome or score fields)
 
 ## Current rollout state

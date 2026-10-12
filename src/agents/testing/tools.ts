@@ -4,7 +4,6 @@ import type { AgentRuntimeContext } from "../_shared/types";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import {
   buildAssessmentPlan,
-  buildMermaidDiagram,
   TESTING_MODES,
   VISUAL_FORMATS,
   type ScoreContext,
@@ -115,21 +114,6 @@ const flashcardSchema = z.object({
   topic: nonEmptyText,
 });
 
-const mermaidNodeSchema = z.object({
-  id: z
-    .string()
-    .trim()
-    .min(1)
-    .regex(/^[A-Za-z][A-Za-z0-9_]*$/, "Node ids must start with a letter and use only letters, numbers, or underscores."),
-  label: nonEmptyText,
-});
-
-const mermaidEdgeSchema = z.object({
-  from: nonEmptyText,
-  to: nonEmptyText,
-  label: nonEmptyText.optional(),
-});
-
 function extractTrailingNumericResult(explanation: string) {
   const matches = [
     ...explanation.matchAll(/=\s*(?:\$)?(-?\d+(?:\.\d+)?)(?![\d.])/g),
@@ -189,7 +173,7 @@ function validatePhysicsMcqCorrectness(items: z.infer<typeof mcqItemSchema>[]) {
 
 export const planAssessmentTool = tool({
   description:
-    "Plan a Testing response by selecting MCQ vs flashcards, extracting topics, deciding if a Mermaid diagram would help, and recommending difficulty based on score history. Pass latestPercentage and trend if you have topic-scoped score context.",
+    "Plan a Testing response by selecting MCQ vs flashcards, extracting topics, and recommending difficulty based on score history. Pass latestPercentage and trend if you have topic-scoped score context.",
   inputSchema: z.object({
     request: nonEmptyText,
     subject: subjectSchema.optional(),
@@ -536,44 +520,6 @@ export function createChemistryAssessmentSourceTool(ctx?: AgentRuntimeContext) {
 export const getPhysicsAssessmentSourceTool = createPhysicsAssessmentSourceTool();
 export const getMathAssessmentSourceTool = createMathAssessmentSourceTool();
 export const getChemistryAssessmentSourceTool = createChemistryAssessmentSourceTool();
-
-export const createMermaidDiagramTool = tool({
-  description:
-    "Build a simple Mermaid diagram spec for a Testing response when a labelled visual helps.",
-  inputSchema: z
-    .object({
-      title: nonEmptyText,
-      direction: z.enum(["TB", "LR"]).default("TB"),
-      nodes: z.array(mermaidNodeSchema).min(2).max(12),
-      edges: z.array(mermaidEdgeSchema).min(1).max(20),
-    })
-    .superRefine((diagram, ctx) => {
-      const nodeIds = new Set(diagram.nodes.map((node) => node.id));
-
-      for (const edge of diagram.edges) {
-        if (!nodeIds.has(edge.from)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Edge source '${edge.from}' does not match a node id.`,
-            path: ["edges"],
-          });
-        }
-
-        if (!nodeIds.has(edge.to)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Edge destination '${edge.to}' does not match a node id.`,
-            path: ["edges"],
-          });
-        }
-      }
-    }),
-  execute: async (input) => ({
-    title: input.title,
-    format: "mermaid" as const,
-    diagram: buildMermaidDiagram(input),
-  }),
-});
 
 export const mcqSetInputSchema = z
   .object({

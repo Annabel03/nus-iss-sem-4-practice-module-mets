@@ -4,7 +4,7 @@ import type { TestingTrend } from "./score-history";
 export const TESTING_MODES = ["mcq", "flashcards"] as const;
 export type TestingMode = (typeof TESTING_MODES)[number];
 
-export const VISUAL_FORMATS = ["none", "mermaid"] as const;
+export const VISUAL_FORMATS = ["none"] as const;
 export type VisualFormat = (typeof VISUAL_FORMATS)[number];
 
 export const DIFFICULTY_LEVELS = ["easier", "standard", "harder"] as const;
@@ -32,35 +32,14 @@ export type AssessmentPlan = {
   gradeLevel: GradeLevel;
   requestedCount?: number;
   topics: string[];
-  needsVisual: boolean;
   visualFormat: VisualFormat;
   difficulty: DifficultyLevel;
   rationale: string;
 };
 
-type MermaidNode = {
-  id: string;
-  label: string;
-};
-
-type MermaidEdge = {
-  from: string;
-  to: string;
-  label?: string;
-};
-
-type MermaidDiagramInput = {
-  title: string;
-  direction: "TB" | "LR";
-  nodes: MermaidNode[];
-  edges: MermaidEdge[];
-};
-
 const flashcardPattern = /\bflashcards?\b|\brevision cards?\b|\bstudy cards?\b/i;
 const mcqPattern =
   /\bmcq\b|\bmcqs\b|multiple choice|\bquiz\b|\btest me\b|\bpractice questions?\b|\bassessment\b/i;
-const visualPattern =
-  /\bdiagram\b|\bvisual\b|\bflowchart\b|\bcycle\b|\bprocess\b|\bmap\b|\bdraw\b|\billustrat/i;
 
 const topicStopwords = new Set([
   "a",
@@ -121,7 +100,7 @@ export function extractAssessmentTopics(request: string) {
       .replace(/\b(?:me|some|please)\b/gi, " ")
       .replace(/\b(?:mcq|mcqs|multiple choice|flashcard|flashcards|revision cards?|study cards?|questions?|assessment)\b/gi, " ")
       .replace(/\b(?:one|two|three|four|five|six|seven|eight|\d+)\b/gi, " ")
-      .replace(/\bwith\s+(?:a\s+)?(?:diagram|visual|flowchart|mermaid)\b.*$/i, " ")
+      .replace(/\bwith\s+(?:a\s+)?(?:diagram|visual|flowchart)\b.*$/i, " ")
       .replace(/\s+/g, " ")
       .trim();
 
@@ -145,10 +124,6 @@ function inferMode(request: string): TestingMode {
   return "mcq";
 }
 
-function inferVisualFormat(request: string): VisualFormat {
-  return visualPattern.test(request) ? "mermaid" : "none";
-}
-
 export function deriveDifficulty(scoreContext?: ScoreContext): DifficultyLevel {
   if (!scoreContext) return "standard";
   const { latestPercentage } = scoreContext;
@@ -159,7 +134,6 @@ export function deriveDifficulty(scoreContext?: ScoreContext): DifficultyLevel {
 
 export function buildAssessmentPlan(input: AssessmentPlanInput): AssessmentPlan {
   const mode = inferMode(input.request);
-  const visualFormat = inferVisualFormat(input.request);
   const topics = extractAssessmentTopics(input.request);
   const difficulty = deriveDifficulty(input.scoreContext);
 
@@ -176,9 +150,7 @@ export function buildAssessmentPlan(input: AssessmentPlanInput): AssessmentPlan 
     mode === "flashcards"
       ? "Flashcard language was detected in the student request."
       : "Quiz-style language was detected or used as the safe default.",
-    visualFormat === "mermaid"
-      ? "A simple Mermaid diagram may help because the student asked for a visual explanation."
-      : "No visual cue was detected, so a plain widget should be enough.",
+    "Testing now uses the standard widget flow without a separate visual-generation path.",
     difficultyRationale,
   ];
 
@@ -188,30 +160,8 @@ export function buildAssessmentPlan(input: AssessmentPlanInput): AssessmentPlan 
     gradeLevel: input.gradeLevel,
     requestedCount: input.requestedCount,
     topics,
-    needsVisual: visualFormat !== "none",
-    visualFormat,
+    visualFormat: "none",
     difficulty,
     rationale: rationaleParts.join(" "),
   };
-}
-
-function escapeMermaidText(value: string) {
-  return value.replace(/"/g, '\\"').trim();
-}
-
-export function buildMermaidDiagram(input: MermaidDiagramInput) {
-  const lines = [`---`, `title: ${input.title}`, `---`, `graph ${input.direction}`];
-
-  for (const node of input.nodes) {
-    lines.push(`  ${node.id}["${escapeMermaidText(node.label)}"]`);
-  }
-
-  for (const edge of input.edges) {
-    const label = edge.label?.trim()
-      ? `|${escapeMermaidText(edge.label)}|`
-      : "";
-    lines.push(`  ${edge.from} -->${label} ${edge.to}`);
-  }
-
-  return lines.join("\n");
 }

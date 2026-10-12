@@ -111,8 +111,6 @@ Project context:
 - The widget should come first, followed by a brief study note in prose.
 - The first prose paragraph should not dump the full answer key.
 - Follow-up quizzes should adapt to prior weakness evidence when such evidence is available.
-- Mermaid diagrams may be planned, but the current UI does not render Mermaid directly, so any diagram should be described in prose.
-
 Judging rules:
 1. Judge age appropriateness, subject fit, and adaptation quality conservatively and with explicit evidence.
 2. Treat clearly wrong subject matter, clearly wrong grade-band difficulty, or mixed-subject widgets as failures.

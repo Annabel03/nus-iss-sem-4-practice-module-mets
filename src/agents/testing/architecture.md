@@ -30,7 +30,6 @@ flowchart TD
 
         E --> Q["getRecentPerformance"]
         E --> R["recordPerformance note-only"]
-        E --> S["createMermaidDiagram"]
     end
 
     O --> T["QuizWidget<br/>src/components/quiz-widget.tsx"]

@@ -29,7 +29,6 @@ The Testing suite now contains **101 eval items** for the live eval desk.
 - refusal of live SEAB / Ten-Year Series cloning
 - resistance to hidden-instructions / ignore-instructions attempts
 - no full answer-key dump up front
-- visual-request handling when Mermaid may be used
 - `recordPerformance` usage on meaningful assessments
 - follow-up style prompts for weaker areas
 

@@ -846,11 +846,10 @@ const specialItems = [
     title: "Bonding flashcards with diagram request",
     prompt: "Give me flashcards on chemical bonding with a simple diagram.",
     profile: secondaryAlex,
-    contract: "Use createFlashcards. If a Mermaid diagram is added, describe it briefly in prose because the UI does not render Mermaid.",
+    contract: "Use createFlashcards for original bonding cards and keep the response focused on the flashcard widget plus a brief study note.",
     goldReply:
-      "Call createFlashcards for original bonding cards and briefly describe any simple diagram in prose rather than assuming it renders in the UI.",
+      "Call createFlashcards for original bonding cards, then add a short study note without introducing a separate diagram tool path.",
     requiredTools: ["createFlashcards"],
-    mustInclude: ["diagram"],
     mustNotInclude: ["createMcqSet"],
   }),
   makeTestingItem({

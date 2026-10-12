@@ -141,10 +141,9 @@ Related support work for reporting:
 - **Expanded Testing tools:**
   - `planAssessment`
   - `getRecentPerformance`
-  - `createMermaidDiagram`
   - `recordPerformance`
 - **Persistence direction:** Testing-performance notes now target server-side files under `logs/testing-performance/`, which stays aligned with the repo's no-database rule.
-- **Prompt direction:** the Testing prompt now supports modular internal planning, Mermaid-first visual planning, and reusable Testing notes while still requiring exactly one widget tool per assessment response.
+- **Prompt direction:** the Testing prompt now supports modular internal planning and reusable Testing notes while still requiring exactly one widget tool per assessment response.
 
 ### Why this matters
 
@@ -564,12 +563,12 @@ Start with:
   - `POST http://localhost:3020/api/testing-harness` correctly blocks on missing `OPENAI_API_KEY`
 - **Findings:**
   - the codebase supports internal Testing modularity more safely than adding new top-level routed agents
-  - current UI still only renders MCQ and flashcard widgets directly, so Mermaid support is planning-first for now
+  - current UI still only renders MCQ and flashcard widgets directly, so keeping Testing focused on those two widget paths is simpler
   - a server-side file log fits the current repo better than introducing a database
   - a dedicated Testing harness route is a practical way to validate Testing without waiting for teammate-owned routing
 - **Blockers:**
   - live model validation is still blocked until `OPENAI_API_KEY` is configured
-  - richer visual rendering would require shared UI coordination if Mermaid should become truly visual in-app
+  - richer visual rendering would require shared UI coordination if Testing ever adds a new visual output path in-app
 - **Next:**
   - run live Testing harness scenarios once `OPENAI_API_KEY` is available
   - add direct tool-contract checks around harness outputs and log reads
