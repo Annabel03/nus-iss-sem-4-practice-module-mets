@@ -238,7 +238,7 @@ function ChatPane({
     const trimmed = text.trim();
     if (!trimmed || busy) return;
     if (messages.length === 0) onFirstUserMessage(trimmed);
-    sendMessage({ text: trimmed });
+    void sendMessage({ text: trimmed });
   }
 
   return (

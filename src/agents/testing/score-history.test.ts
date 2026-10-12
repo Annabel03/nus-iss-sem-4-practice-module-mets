@@ -10,6 +10,12 @@ import {
   type TestingAttemptRecord,
 } from "./score-history";
 
+test("topic keys keep the existing punctuation rules and general fallback", () => {
+  assert.equal(buildTestingTopicKey({ topics: [" -- Speed / Time -- "], title: "Quiz" }), "speed-time");
+  assert.equal(buildTestingTopicKey({ topics: ["!!!"], title: "H2 Calculus Quiz" }), "calculus--quiz");
+  assert.equal(buildTestingTopicKey({ topics: ["!!!"], title: "---" }), "general");
+});
+
 test("topic key and label normalise repeated quiz topics", () => {
   const topics = ["Differentiation", "differentiation", "Chain Rule"];
 

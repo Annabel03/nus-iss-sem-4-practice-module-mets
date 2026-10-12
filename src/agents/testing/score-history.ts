@@ -1,5 +1,6 @@
 import type { Subject } from "../_shared/types";
 import type { TestingMode } from "./assessment-planner";
+import { asciiSlug } from "@/lib/text";
 
 export type TestingAttemptRecord = {
   id: string;
@@ -68,10 +69,7 @@ function dedupeTopics(topics: string[]) {
 }
 
 function slugifyPart(value: string) {
-  return cleanText(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  return asciiSlug(cleanText(value));
 }
 
 function titleWords(title: string) {

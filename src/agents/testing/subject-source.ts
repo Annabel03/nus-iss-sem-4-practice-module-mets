@@ -1,4 +1,5 @@
 import { searchSyllabus } from "@/lib/syllabus";
+import { trimEndCharacters } from "@/lib/text";
 import type { GradeLevel, Subject } from "../_shared/types";
 import { extractAssessmentTopics } from "./assessment-planner";
 
@@ -73,7 +74,7 @@ function uniqueNonEmpty(values: string[], limit: number) {
 function truncateAtBoundary(value: string, limit: number) {
   const trimmed = value.replace(/\s+/g, " ").trim();
   if (trimmed.length <= limit) return trimmed;
-  return `${trimmed.slice(0, limit).replace(/[ ,;:-]+$/g, "")}...`;
+  return `${trimEndCharacters(trimmed.slice(0, limit), " ,;:-")}...`;
 }
 
 function resolveTopics(request: string, explicitTopics?: string[]) {

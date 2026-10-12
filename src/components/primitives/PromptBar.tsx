@@ -293,9 +293,11 @@ export default function PromptBar({
       waveSpeed: 1.8,
       easing: "easeOutExpo",
     });
-    sweep.done.finally(() => {
+    const resetSweep = () => {
       sweepingRef.current = false;
-    });
+    };
+    // The sweep is decorative; allow another attempt after success or failure.
+    void sweep.done.then(resetSweep, resetSweep);
   };
 
   const selectModel = (next: (typeof MODELS)[number]) => {
@@ -542,6 +544,8 @@ export default function PromptBar({
         <canvas
           ref={glimmRef}
           aria-hidden="true"
+          tabIndex={-1}
+          inert
           className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
           style={{ borderRadius: "inherit" }}
         />

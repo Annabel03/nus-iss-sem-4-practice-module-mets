@@ -82,8 +82,8 @@ function RollingDigits({ value }: { value: string }) {
     if (prevRef.current === value) return;
     const from = prevRef.current;
     prevRef.current = value;
-    const fromN = parseInt(from, 10);
-    const toN = parseInt(value, 10);
+    const fromN = Number.parseInt(from, 10);
+    const toN = Number.parseInt(value, 10);
     setDir(Number.isFinite(fromN) && Number.isFinite(toN) && toN < fromN ? "down" : "up");
     setOldVal(from);
     setNewVal(value);

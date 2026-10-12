@@ -5,6 +5,7 @@ import {
   createChemistryAssessmentSourceTool,
   createMcqSetTool,
   flashcardSetInputSchema,
+  getTopicScoreContextTool,
   mcqSetInputSchema,
   recordPerformanceInputSchema,
 } from "./tools";
@@ -20,6 +21,33 @@ const primaryCtx: AgentRuntimeContext = {
   },
   recentChats: [],
 };
+
+test("profile-note scores retain decimal percentages, first-match priority and topic scoping", async () => {
+  const previousUrl = process.env.SUPABASE_URL;
+  process.env.SUPABASE_URL = "";
+  try {
+    const options = { toolCallId: "score-test", messages: [] };
+    for (const [note, expected] of [
+      ["Kinematics quiz: 82.5 % then 60%, trend: improving", 82.5],
+      ["Kinematics: 40\n% trend regressing", 40],
+    ] as const) {
+      const tool = getTopicScoreContextTool({
+        ...primaryCtx,
+        profile: { ...primaryCtx.profile, notes: [note] },
+      });
+      const result = await tool.execute!({ subject: "physics", topics: ["kinematics"] }, options);
+      assert.ok("available" in result);
+      assert.equal(result.available, true);
+      if (result.available) assert.equal(result.latestPercentage, expected);
+      assert.deepEqual(await tool.execute!({ subject: "physics", topics: ["heat"] }, options), {
+        available: false,
+      });
+    }
+  } finally {
+    if (previousUrl === undefined) delete process.env.SUPABASE_URL;
+    else process.env.SUPABASE_URL = previousUrl;
+  }
+});
 
 function hasSupportedFlag(value: unknown): value is { supported: boolean } {
   return value !== null && typeof value === "object" && "supported" in value;

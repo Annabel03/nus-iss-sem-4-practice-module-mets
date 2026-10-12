@@ -2,6 +2,7 @@ import { appendFile, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { GradeLevel, Subject } from "../_shared/types";
 import type { TestingMode, VisualFormat } from "./assessment-planner";
+import { asciiSlug } from "@/lib/text";
 
 const LOG_DIR = path.join(process.cwd(), "logs", "testing-performance");
 const JSONL_FILE = path.join(LOG_DIR, "entries.jsonl");
@@ -25,7 +26,7 @@ export type AssessmentPerformanceEntry = {
 };
 
 function slugify(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "anon";
+  return asciiSlug(value) || "anon";
 }
 
 function markdownPath(sessionId: string) {

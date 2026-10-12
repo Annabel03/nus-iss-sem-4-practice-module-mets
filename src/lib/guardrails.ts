@@ -6,8 +6,8 @@ const BLOCKED = [
 const PRIVATE_DATA_REQUESTS = [
   /\b(?:another|other|someone else(?:'s)?|their)\s+student'?s?\s+(?:nric|name|full name|email|phone|address|parent details?)\b/i,
   /\b(?:show|tell|give|reveal|share)\b[\s\S]{0,80}\b(?:another|other|someone else(?:'s)?|their)\s+(?:student'?s?\s+)?(?:nric|name|full name|email|phone|address|parent details?)\b/i,
-  /\b(?:show|tell|give|reveal|share)\b[\s\S]{0,80}\b(?:another|other|someone else(?:'s)?|their)\s+(?:student'?s?\s+)?(?:mcq|quiz|flashcard|testing)?\s*(?:score|scores|results|progress|history|records?)\b/i,
-  /\b(?:another|other|someone else(?:'s)?|their)\s+(?:mcq|quiz|flashcard|testing)?\s*(?:score|scores|results|progress|history|records?)\b/i,
+  /\b(?:show|tell|give|reveal|share)\b[\s\S]{0,80}\b(?:another|other|someone else(?:'s)?|their)\s+(?:student'?s?\s+)?(?:(?:mcq|quiz|flashcard|testing)\s*)?(?:score|scores|results|progress|history|records?)\b/i,
+  /\b(?:another|other|someone else(?:'s)?|their)\s+(?:(?:mcq|quiz|flashcard|testing)\s*)?(?:score|scores|results|progress|history|records?)\b/i,
 ];
 
 export function sanitizeStudentMessage(text: string) {

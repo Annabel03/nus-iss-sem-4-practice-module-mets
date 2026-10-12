@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { GradeLevel, Subject } from "@/agents/_shared/types";
+import { trimEndCharacters } from "./text";
 
 type Chunk = {
   id: string;
@@ -112,10 +113,7 @@ async function loadChunks(): Promise<Chunk[]> {
       const gradeLevel = gradeFromHeading(title);
 
       chunks.push({
-        id: `${subject}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`.replace(
-          /-+$/g,
-          "",
-        ),
+        id: trimEndCharacters(`${subject}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`, "-"),
         subject,
         gradeLevel,
         title,

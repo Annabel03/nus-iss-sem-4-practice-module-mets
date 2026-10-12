@@ -227,9 +227,16 @@ function extractTopicScoreFromNotes(
     const lower = note.toLowerCase();
     if (!topicWords.some((word) => lower.includes(word))) continue;
 
-    const percentageMatch = lower.match(/(\d+(?:\.\d+)?)\s*%/);
-    if (!percentageMatch) continue;
-    const latestPercentage = Number(percentageMatch[1]);
+    let latestPercentage: number | undefined;
+    for (const number of lower.matchAll(/\d+(?:\.\d+)?/g)) {
+      let end = number.index + number[0].length;
+      while (end < lower.length && /\s/.test(lower[end])) end++;
+      if (lower[end] === "%") {
+        latestPercentage = Number(number[0]);
+        break;
+      }
+    }
+    if (latestPercentage === undefined) continue;
 
     const trendMatch = lower.match(/trend[:\s]+(improving|regressing|stable|new)/);
     if (!trendMatch) continue;

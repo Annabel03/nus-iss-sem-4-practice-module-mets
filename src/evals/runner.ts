@@ -188,7 +188,7 @@ export function summarizeRun(items: EvalItemResult[], suiteIds: EvalSuiteId[]): 
     items.length === 0 ? 0 : items.reduce((sum, item) => sum + item.accuracy, 0) / items.length;
   return {
     id: `run-${Date.now().toString(36)}`,
-    startedAt: items[0] ? new Date().toISOString() : new Date().toISOString(),
+    startedAt: new Date().toISOString(),
     finishedAt: new Date().toISOString(),
     model: runModelLabel(items),
     suiteIds,
