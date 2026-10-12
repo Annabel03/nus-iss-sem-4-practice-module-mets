@@ -1,11 +1,8 @@
 import type { EvalCheck, EvalItem, EvalItemResult, GoldRouting } from "./types";
-
-function haystack(text: string) {
-  return text.toLowerCase();
-}
+import { chemistryPhraseIncludes } from "./chemistry-notation";
 
 function includesPhrase(text: string, phrase: string) {
-  return haystack(text).includes(phrase.toLowerCase());
+  return text.toLowerCase().includes(phrase.toLowerCase());
 }
 
 function routingScore(expected: GoldRouting, actual?: GoldRouting) {
@@ -22,9 +19,15 @@ function routingScore(expected: GoldRouting, actual?: GoldRouting) {
   return { score: hits / fields.length, checks };
 }
 
-function phraseScore(text: string, phrases: string[], label: string, invert = false) {
+function phraseScore(
+  text: string,
+  phrases: string[],
+  label: string,
+  invert = false,
+  matcher = includesPhrase,
+) {
   const checks: EvalCheck[] = phrases.map((phrase) => {
-    const found = includesPhrase(text, phrase);
+    const found = matcher(text, phrase);
     const passed = invert ? !found : found;
     return {
       name: `${label}:${phrase}`,
@@ -60,8 +63,15 @@ export function scoreAgainstScaffold(options: {
     };
   }
 
-  const must = phraseScore(combined, item.scaffold.mustInclude ?? [], "must");
-  const mustNot = phraseScore(combined, item.scaffold.mustNotInclude ?? [], "mustNot", true);
+  const matcher = item.suiteId === "chemistry" ? chemistryPhraseIncludes : includesPhrase;
+  const must = phraseScore(combined, item.scaffold.mustInclude ?? [], "must", false, matcher);
+  const mustNot = phraseScore(
+    combined,
+    item.scaffold.mustNotInclude ?? [],
+    "mustNot",
+    true,
+    matcher,
+  );
   const required = item.scaffold.requiredTools ?? [];
   const toolChecks: EvalCheck[] = required.map((tool) => ({
     name: `tool:${tool}`,
