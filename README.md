@@ -67,6 +67,11 @@ npm run promptfoo:ci
 
 See [promptfoo/README.md](./promptfoo/README.md).
 
+Production deployment on pushes to `main` requires Project checks, the Promptfoo
+smoke-suite regression gate, and SonarQube to pass. Vercel's automatic Git
+deployments from `main` are disabled in `vercel.json`; GitHub Actions handles
+the gated production release. See the [deployment gate details](./promptfoo/README.md#production-deployment-gate).
+
 ## Langflow
 
 Optional prompt-log console. See [langflow/README.md](./langflow/README.md).

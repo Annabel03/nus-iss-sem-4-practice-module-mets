@@ -138,6 +138,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
       - checks
+      - promptfoo
       - sonar
     runs-on: ubuntu-latest
     timeout-minutes: 20

@@ -209,7 +209,7 @@ Then review and commit the updated `promptfoo/baseline.json` in the same change 
 - The checked-in Promptfoo helper scripts now load `.env.local` and `.env` automatically before running the METS eval runtime.
 - Your Promptfoo CLI login is useful for Promptfoo cloud/sharing workflows, but local evals here are primarily driven by the checked-in config plus the repo's own runtime.
 
-## Future CI path
+## CI and production deployment
 
 Promptfoo is now wired into the existing GitHub Actions quality-gate workflow.
 
@@ -246,3 +246,29 @@ Without it, the wrapped METS eval runtime cannot run the active LLM judges.
 - it prepares the **smoke subset** by default, not the full live catalog
 - it now enforces a regression gate against the committed smoke-subset baseline
 - results are uploaded as workflow artifacts for inspection
+- production deployment requires the Promptfoo job to succeed, alongside Project checks and SonarQube
+
+### Production deployment gate
+
+On a push to `main`, the Vercel production job waits for `checks`, `promptfoo`,
+and `sonar` from the same workflow run. If the Promptfoo job fails, is cancelled,
+or is skipped, production deployment is skipped. This uses GitHub Actions'
+[required job dependencies](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds).
+
+Passing Promptfoo means passing the **existing regression gate**, not necessarily
+passing every individual eval. The raw eval step retains `continue-on-error` so
+the regression checker can assess the accepted baseline; the checker itself is
+required to pass. The committed Testing baseline currently permits one failure
+out of six cases. Results remain available as artifacts when the gate fails.
+
+`vercel.json` disables automatic Git deployments from `main` using
+[`git.deploymentEnabled`](https://vercel.com/docs/project-configuration/git-configuration),
+so those deployments cannot race ahead of the workflow. Production releases
+should use this workflow; direct Vercel CLI deployments, dashboard redeployments,
+and deploy hooks are outside this GitHub Actions gate.
+
+The deployment job requires `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and
+`VERCEL_PROJECT_ID`, in addition to the existing `OPENAI_API_KEY` and
+`SONAR_TOKEN` secrets used by the quality checks. Pull requests and manual
+workflow runs execute checks without deploying production. The gate takes
+effect once the workflow change is merged into `main`.
