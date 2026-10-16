@@ -1,4 +1,6 @@
 import type { ChatMemoryItem, StudentProfile } from "@/agents/_shared/types";
+import type { ChatHistoryItem } from "./chat-history";
+import type { Json } from "./database.types";
 import { ensureConversation, nextTitle, touchConversation } from "./conversations";
 import { storeChatEmbedding } from "./embeddings";
 import { getSupabaseData } from "./supabase";
@@ -40,7 +42,7 @@ export async function getRecentChats(
 
 export async function rememberTurn(
   sessionId: string,
-  item: ChatMemoryItem,
+  item: ChatHistoryItem,
   profile?: StudentProfile,
   userId?: string,
   accessToken?: string,
@@ -76,6 +78,7 @@ export async function rememberTurn(
     text: item.text,
     agent: item.agent ?? null,
     at: item.at,
+    ui_message: item.uiMessage ? JSON.parse(JSON.stringify(item.uiMessage)) as Json : null,
   });
   await storeChatEmbedding({
     conversationId: sessionId,

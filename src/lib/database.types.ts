@@ -71,6 +71,7 @@ export type Database = {
           role: string;
           session_id: string;
           text: string;
+          ui_message: Json | null;
         };
         Insert: {
           agent?: string | null;
@@ -79,6 +80,7 @@ export type Database = {
           role: string;
           session_id: string;
           text: string;
+          ui_message?: Json | null;
         };
         Update: {
           agent?: string | null;
@@ -87,6 +89,7 @@ export type Database = {
           role?: string;
           session_id?: string;
           text?: string;
+          ui_message?: Json | null;
         };
         Relationships: [];
       };

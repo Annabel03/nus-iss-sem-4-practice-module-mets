@@ -1,4 +1,6 @@
 import type { ChatMemoryItem } from "@/agents/_shared/types";
+import type { ChatHistoryItem } from "./chat-history";
+import type { MetsUIMessage } from "./ui-types";
 import { titleFromText } from "./chunks";
 import { getSupabaseData } from "./supabase";
 
@@ -96,7 +98,7 @@ export async function listConversationMessages(
   conversationId: string,
   userId: string,
   accessToken?: string,
-): Promise<ChatMemoryItem[]> {
+): Promise<ChatHistoryItem[]> {
   const supabase = getSupabaseData(accessToken);
   if (!supabase) return [];
   const owned = await supabase
@@ -108,7 +110,7 @@ export async function listConversationMessages(
   if (!owned.data) return [];
   const { data, error } = await supabase
     .from("chat_memory")
-    .select("role, text, agent, at")
+    .select("role, text, agent, at, ui_message")
     .eq("session_id", conversationId)
     .order("at", { ascending: true });
   if (error || !data) return [];
@@ -117,6 +119,7 @@ export async function listConversationMessages(
     text: row.text,
     agent: row.agent as ChatMemoryItem["agent"],
     at: row.at,
+    uiMessage: row.ui_message as MetsUIMessage | null,
   }));
 }
 

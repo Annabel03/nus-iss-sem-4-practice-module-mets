@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ChatMemoryItem, PromptLogEntry, RoutingDecision, StudentProfile } from "@/agents/_shared/types";
+import type { PromptLogEntry, RoutingDecision, StudentProfile } from "@/agents/_shared/types";
 import { ValuePill } from "@/components/atoms/ValuePill";
 import { AppFrame, DeskNav } from "@/components/app-frame";
 import { ConversationRail, type ConversationItem } from "@/components/conversation-rail";
@@ -14,6 +14,7 @@ import { LoadingState } from "@/components/ui/loading-state";
 import { PromptBar } from "@/components/ui/prompt-bar";
 import ThinkingState from "@/components/primitives/ThinkingState";
 import { AGENT_COPY } from "@/lib/agent-copy";
+import { toUiMessages, type ChatHistoryItem } from "@/lib/chat-history";
 import { isTestingWidgetToolType, shouldSuppressTestingBusyIndicator } from "@/lib/testing-turn";
 import type { MetsUIMessage } from "@/lib/ui-types";
 import { MessageThread } from "./message-thread";
@@ -29,14 +30,6 @@ const STARTERS = [
   "Convert 72 km/h to m/s and show the working.",
   "Balance Fe + O₂ → Fe₂O₃, then quiz me on redox.",
 ];
-
-function toUiMessages(items: ChatMemoryItem[]): MetsUIMessage[] {
-  return items.map((item, index) => ({
-    id: `history-${item.at}-${index}`,
-    role: item.role,
-    parts: [{ type: "text" as const, text: item.text }],
-  }));
-}
 
 function routingTone(agent: RoutingDecision["agent"]): "neutral" | "green" | "orange" | "accent" {
   if (agent === "chemistry") return "green";
@@ -87,7 +80,7 @@ export function StudioShell({
     let cancelled = false;
     void fetch(`/api/conversations/${activeId}`)
       .then((response) => (response.ok ? response.json() : { messages: [] }))
-      .then((payload: { messages?: ChatMemoryItem[] }) => {
+      .then((payload: { messages?: ChatHistoryItem[] }) => {
         if (cancelled) return;
         setHistory(toUiMessages(payload.messages ?? []));
         setLoadedId(activeId);

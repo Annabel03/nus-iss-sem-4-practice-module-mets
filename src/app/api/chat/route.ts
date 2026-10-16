@@ -123,7 +123,7 @@ export async function POST(req: Request) {
     sessionId,
     {
       role: "user",
-      text: previewText(text, 8000),
+      text,
       at: new Date().toISOString(),
     },
     profile,
@@ -183,7 +183,8 @@ export async function POST(req: Request) {
         sessionId,
         {
           role: "assistant",
-          text: previewText(output || `${routing.agent} response`, 8000),
+          text: output || `${routing.agent} response`,
+          uiMessage: responseMessage,
           agent: routing.agent,
           at: new Date().toISOString(),
         },
