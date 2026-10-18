@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.130",
-    "@ai-sdk/openai": "^3.0.124",
+    "@ai-sdk/openai": "^4.0.94",
     "@ai-sdk/react": "^3.0.303",
     "@hugeicons/core-free-icons": "^4.3.4",
     "@hugeicons/react": "^1.1.10",
