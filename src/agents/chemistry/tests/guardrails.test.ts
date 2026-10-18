@@ -7,7 +7,7 @@ import { MockLanguageModelV3 } from "ai/test";
 import {
   chemistryGuardrails,
   normaliseChemistryReply,
-} from "./guardrails";
+} from "@/agents/chemistry/guardrails";
 
 // -----------------------------------------------------------------------------
 // Helpers

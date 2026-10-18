@@ -1,10 +1,10 @@
 import { ToolLoopAgent, stepCountIs, wrapLanguageModel } from "ai";
 import { getModel } from "@/lib/llm";
-import { documentSearchTool, webSearchTool } from "../_shared/tools";
-import type { AgentRuntimeContext } from "../_shared/types";
-import { buildChemistryInstructions, CHEMISTRY_PROMPT_VERSION } from "./prompts";
-import { periodicTableTool, reactionBalancerTool } from "./tools";
-import { chemistryGuardrails } from "./guardrails";
+import { documentSearchTool, webSearchTool } from "@/agents/_shared/tools";
+import type { AgentRuntimeContext } from "@/agents/_shared/types";
+import { buildChemistryInstructions, CHEMISTRY_PROMPT_VERSION } from "@/agents/chemistry/prompts";
+import { periodicTableTool, reactionBalancerTool } from "@/agents/chemistry/tools";
+import { chemistryGuardrails } from "@/agents/chemistry/guardrails";
 
 export function createChemistryAgent(ctx: AgentRuntimeContext) {
   return new ToolLoopAgent({

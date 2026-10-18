@@ -1,8 +1,8 @@
 
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { chemistryItems } from "../../evals/catalog/chemistry";
-import { GRADE_LEVELS } from "../_shared/types";
+import { chemistryItems } from "@/evals/catalog/chemistry";
+import { GRADE_LEVELS } from "@/agents/_shared/types";
 
 const allowedTools = new Set([
   "periodicTable",

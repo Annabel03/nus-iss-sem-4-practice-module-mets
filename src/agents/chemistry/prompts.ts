@@ -1,5 +1,5 @@
-import { formatStudentContext, singaporeTutorRules } from "../_shared/context";
-import type { AgentRuntimeContext } from "../_shared/types";
+import { formatStudentContext, singaporeTutorRules } from "@/agents/_shared/context";
+import type { AgentRuntimeContext } from "@/agents/_shared/types";
 
 export const CHEMISTRY_PROMPT_ID = "chemistry.system";
 export const CHEMISTRY_PROMPT_VERSION = "1.1.1";
