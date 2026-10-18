@@ -4,7 +4,7 @@ import {
   balanceEquation,
   findPeriodicTableElements,
   PERIODIC_TABLE,
-} from "./tools";
+} from "@/agents/chemistry/tools";
 
 describe("Periodic Table Tool", () => {
   it("contains all 118 elements with unique symbols", () => {
