@@ -48,7 +48,7 @@
     "remark-math": "^6.0.0",
     "shadow-plugin": "^2.1.1",
     "tailwind-merge": "^3.7.0",
-    "ws": "^8.21.3",
+    "ws": "^8.22.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/ws": "^8.18.1",
+    "@types/ws": "^8.18.2",
     "c8": "^12.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.3.8",
