@@ -60,7 +60,7 @@
     "c8": "^12.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.3.8",
-    "promptfoo": "^0.120.19",
+    "promptfoo": "^0.124.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
